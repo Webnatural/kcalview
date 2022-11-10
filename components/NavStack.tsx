@@ -31,7 +31,6 @@ const forFade = ({ current, next }) => {
 
 const Stack = createNativeStackNavigator();
 
-
 export default function NavStack() {
   return (
 
