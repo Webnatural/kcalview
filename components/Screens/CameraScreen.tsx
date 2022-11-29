@@ -3,7 +3,7 @@ import {useMemo} from 'react';
 import uuid from 'react-uuid';
 import {CameraProps} from '../../types/NavStack';
 import {overlayStyles, textStyles} from './CameraScreen.styles';
-
+import Clipboard from '@react-native-clipboard/clipboard';
 import {runOnJS} from 'react-native-reanimated';
 import {
   StyleSheet,
@@ -13,7 +13,6 @@ import {
   PixelRatio,
   TouchableOpacity,
   Alert,
-  Clipboard,
 } from 'react-native';
 import {OCRFrame, scanOCR} from 'vision-camera-ocr';
 import {
