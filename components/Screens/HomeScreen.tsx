@@ -1,24 +1,12 @@
-/* eslint-disable react-native/no-inline-styles */
-import * as React from 'react';
-import {
-  Button,
-  StyleSheet,
-  View,
-  Text
-} from 'react-native';
+import React from 'react';
+import {Button, StyleSheet, View, Text} from 'react-native';
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({navigation}) {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Text>Home Screen</Text>
-            <Button
-              title="Camera"
-              onPress={() => navigation.navigate('Camera')}
-            />
-            <Button
-              title="About"
-              onPress={() => navigation.navigate('About')}
-            />
+      <Button title="Camera" onPress={() => navigation.navigate('Camera')} />
+      <Button title="About" onPress={() => navigation.navigate('About')} />
     </View>
   );
 }
