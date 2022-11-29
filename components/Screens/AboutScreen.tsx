@@ -1,7 +1,8 @@
 import React from 'react';
 import {Button, StyleSheet, View, Text} from 'react-native';
+import {AboutProps} from '../../types/NavStack';
 
-export default function AboutScreen({navigation}) {
+export default function AboutScreen({route, navigation}: AboutProps) {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Text>About Screen</Text>

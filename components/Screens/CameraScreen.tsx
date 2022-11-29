@@ -1,4 +1,9 @@
 import React from 'react';
+import {useMemo} from 'react';
+import uuid from 'react-uuid';
+import {CameraProps} from '../../types/NavStack';
+import {overlayStyles, textStyles} from './CameraScreen.styles';
+
 import {runOnJS} from 'react-native-reanimated';
 import {
   StyleSheet,
@@ -17,12 +22,12 @@ import {
   Camera,
 } from 'react-native-vision-camera';
 
-export default function CameraScreen() {
+export default function CameraScreen({route, navigation}: CameraProps) {
   const [hasPermission, setHasPermission] = React.useState(false);
   const [ocr, setOcr] = React.useState<OCRFrame>();
-  const [pixelRatio, setPixelRatio] = React.useState<number>(1);
+  const [pixelRatio, setPixelRatio] = React.useState(1);
   const devices = useCameraDevices();
-  const device = devices.back;
+  const device = useMemo(() => devices.back, [devices.back]);
 
   const frameProcessor = useFrameProcessor(frame => {
     'worklet';
@@ -43,26 +48,13 @@ export default function CameraScreen() {
         {ocr?.result.blocks.map(block => {
           return (
             <TouchableOpacity
+              key={uuid()}
               onPress={() => {
                 Clipboard.setString(block.text);
                 Alert.alert(`"${block.text}" copied to the clipboard`);
               }}
-              style={{
-                position: 'absolute',
-                left: block.frame.x * pixelRatio,
-                top: block.frame.y * pixelRatio,
-                backgroundColor: 'white',
-                padding: 8,
-                borderRadius: 6,
-              }}>
-              <Text
-                style={{
-                  fontSize: 25,
-                  justifyContent: 'center',
-                  textAlign: 'center',
-                }}>
-                {block.text}
-              </Text>
+              style={[overlayStyles(block, pixelRatio).touchableOpacity]}>
+              <Text style={[textStyles.touchableOpacity]}>{block.text}</Text>
             </TouchableOpacity>
           );
         })}
@@ -70,7 +62,7 @@ export default function CameraScreen() {
     );
   };
 
-  return device !== undefined && hasPermission ? (
+  return device && hasPermission ? (
     <>
       <Camera
         style={[StyleSheet.absoluteFill]}

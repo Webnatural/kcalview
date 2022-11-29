@@ -1,7 +1,8 @@
 import React from 'react';
-import {Button, StyleSheet, View, Text} from 'react-native';
+import {Button, View, Text} from 'react-native';
+import {HomeProps} from '../../types/NavStack';
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({route, navigation}: HomeProps) {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Text>Home Screen</Text>
