@@ -1,13 +1,18 @@
 import React from 'react';
-import {Button, View, Text} from 'react-native';
+import {TouchableOpacity, View, Text} from 'react-native';
 import {HomeProps} from '../../types/NavStack';
+import {homeStyles} from './HomeScreen.styles';
 
 export default function HomeScreen({route, navigation}: HomeProps) {
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    <View style={homeStyles.homeScreen}>
       <Text>Home Screen</Text>
-      <Button title="Camera" onPress={() => navigation.navigate('Camera')} />
-      <Button title="About" onPress={() => navigation.navigate('About')} />
+      <TouchableOpacity onPress={() => navigation.navigate('Camera')}>
+        <Text style={homeStyles.touchableBtn}>Camera</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('About')}>
+        <Text style={homeStyles.touchableBtn}>About</Text>
+      </TouchableOpacity>
     </View>
   );
 }
