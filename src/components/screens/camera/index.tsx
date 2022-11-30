@@ -2,7 +2,7 @@ import React from 'react';
 import {useMemo} from 'react';
 import uuid from 'react-uuid';
 import {CameraProps} from '../../../components/navstack/root/index.types';
-import {overlayStyles, textStyles} from './index.styles';
+import {cameraStyles} from './index.styles';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {runOnJS} from 'react-native-reanimated';
 import {
@@ -52,8 +52,14 @@ export default function CameraScreen({route, navigation}: CameraProps) {
                 Clipboard.setString(block.text);
                 Alert.alert(`"${block.text}" copied to the clipboard`);
               }}
-              style={[overlayStyles(block, pixelRatio).touchableOpacity]}>
-              <Text style={[textStyles.touchableOpacity]}>{block.text}</Text>
+              style={[
+                cameraStyles.touchable,
+                {
+                  left: block.frame.x * pixelRatio,
+                  top: block.frame.y * pixelRatio,
+                },
+              ]}>
+              <Text style={[cameraStyles.text]}>{block.text}</Text>
             </TouchableOpacity>
           );
         })}
@@ -67,7 +73,7 @@ export default function CameraScreen({route, navigation}: CameraProps) {
         style={[StyleSheet.absoluteFill]}
         frameProcessor={frameProcessor}
         device={device}
-        isActive={true}
+        isActive
         frameProcessorFps={5}
         onLayout={(event: LayoutChangeEvent) => {
           setPixelRatio(

@@ -1,4 +1,4 @@
-declare type BoundingFrame = {
+export type BoundingFrame = {
   x: number;
   y: number;
   width: number;
@@ -6,16 +6,16 @@ declare type BoundingFrame = {
   boundingCenterX: number;
   boundingCenterY: number;
 };
-declare type Point = {
+export type Point = {
   x: number;
   y: number;
 };
-declare type TextElement = {
+export type TextElement = {
   text: string;
   frame: BoundingFrame;
   cornerPoints: Point[];
 };
-declare type TextLine = {
+export type TextLine = {
   text: string;
   elements: TextElement[];
   frame: BoundingFrame;
@@ -30,7 +30,7 @@ export type TextBlock = {
   recognizedLanguages: string[];
   cornerPoints: Point[];
 };
-declare type Text = {
+export type Text = {
   text: string;
   blocks: TextBlock[];
 };

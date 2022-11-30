@@ -1,20 +1,14 @@
 import {StyleSheet} from 'react-native';
 import {TextBlock} from './index.types';
 
-export const overlayStyles = (block: TextBlock, pxRatio: number) =>
-  StyleSheet.create({
-    touchableOpacity: {
-      position: 'absolute',
-      left: block.frame.x * pxRatio,
-      top: block.frame.y * pxRatio,
-      backgroundColor: 'rgba(0,0,0,0.1)',
-      padding: 8,
-      borderRadius: 6,
-    },
-  });
-
-export const textStyles = StyleSheet.create({
-  touchableOpacity: {
+export const cameraStyles = StyleSheet.create({
+  touchable: {
+    position: 'absolute',
+    backgroundColor: 'rgba(0,0,0,0.1)',
+    padding: 8,
+    borderRadius: 6,
+  },
+  text: {
     fontSize: 25,
     justifyContent: 'center',
     textAlign: 'center',
