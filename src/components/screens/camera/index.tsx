@@ -1,7 +1,7 @@
 import React from 'react';
 import {useMemo} from 'react';
 import uuid from 'react-uuid';
-import {CameraProps} from '../../../components/navstack/root/index.types';
+import {Props} from './index.types';
 import {cameraStyles} from './index.styles';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {runOnJS} from 'react-native-reanimated';
@@ -21,7 +21,7 @@ import {
   Camera,
 } from 'react-native-vision-camera';
 
-export default function CameraScreen({route, navigation}: CameraProps) {
+export default function CameraScreen({route, navigation}: Props) {
   const [hasPermission, setHasPermission] = React.useState(false);
   const [ocr, setOcr] = React.useState<OCRFrame>();
   const [pixelRatio, setPixelRatio] = React.useState(1);

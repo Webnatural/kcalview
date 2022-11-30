@@ -1,12 +1,12 @@
 import React from 'react';
 import {TouchableOpacity, View, Text} from 'react-native';
-import {HomeProps} from '../../../types/navstack/root/index.types';
+import {Props} from './index.types';
 import {styles} from '../../shared/index.styles';
-import {homeScreenStyles} from './index.styles';
+import {homeStyles} from './index.styles';
 
-export default function HomeScreen({route, navigation}: HomeProps) {
+export default function HomeScreen({route, navigation}: Props) {
   return (
-    <View style={homeScreenStyles.homeScreenContainer}>
+    <View style={homeStyles.homeScreenContainer}>
       <TouchableOpacity
         style={styles.fullWidthButton}
         onPress={() => navigation.navigate('Camera')}>
