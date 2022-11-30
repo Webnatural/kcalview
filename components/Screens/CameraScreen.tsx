@@ -1,6 +1,5 @@
-/* eslint-disable react-native/no-inline-styles */
-import * as React from 'react';
-import { runOnJS } from 'react-native-reanimated';
+import React from 'react';
+import {runOnJS} from 'react-native-reanimated';
 import {
   StyleSheet,
   View,
@@ -11,13 +10,12 @@ import {
   Alert,
   Clipboard,
 } from 'react-native';
-import { OCRFrame, scanOCR } from 'vision-camera-ocr';
+import {OCRFrame, scanOCR} from 'vision-camera-ocr';
 import {
   useCameraDevices,
   useFrameProcessor,
   Camera,
 } from 'react-native-vision-camera';
-
 
 export default function CameraScreen() {
   const [hasPermission, setHasPermission] = React.useState(false);
@@ -26,7 +24,7 @@ export default function CameraScreen() {
   const devices = useCameraDevices();
   const device = devices.back;
 
-  const frameProcessor = useFrameProcessor((frame) => {
+  const frameProcessor = useFrameProcessor(frame => {
     'worklet';
     const data = scanOCR(frame);
     runOnJS(setOcr)(data);
@@ -42,7 +40,7 @@ export default function CameraScreen() {
   const renderOverlay = () => {
     return (
       <>
-        {ocr?.result.blocks.map((block) => {
+        {ocr?.result.blocks.map(block => {
           return (
             <TouchableOpacity
               onPress={() => {
@@ -56,15 +54,13 @@ export default function CameraScreen() {
                 backgroundColor: 'white',
                 padding: 8,
                 borderRadius: 6,
-              }}
-            >
+              }}>
               <Text
                 style={{
                   fontSize: 25,
                   justifyContent: 'center',
                   textAlign: 'center',
-                }}
-              >
+                }}>
                 {block.text}
               </Text>
             </TouchableOpacity>
@@ -76,7 +72,7 @@ export default function CameraScreen() {
 
   return device !== undefined && hasPermission ? (
     <>
-<Camera
+      <Camera
         style={[StyleSheet.absoluteFill]}
         frameProcessor={frameProcessor}
         device={device}
@@ -86,8 +82,8 @@ export default function CameraScreen() {
           setPixelRatio(
             event.nativeEvent.layout.width /
               PixelRatio.getPixelSizeForLayoutSize(
-                event.nativeEvent.layout.width
-              )
+                event.nativeEvent.layout.width,
+              ),
           );
         }}
       />
