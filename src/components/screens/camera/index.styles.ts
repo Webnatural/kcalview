@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {TextBlock} from '../../types/Screens/CameraScreen';
+import {TextBlock} from './index.types';
 
 export const overlayStyles = (block: TextBlock, pxRatio: number) =>
   StyleSheet.create({

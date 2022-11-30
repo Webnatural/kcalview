@@ -1,8 +1,8 @@
 import React from 'react';
 import {TouchableOpacity, View, Text} from 'react-native';
-import {HomeProps} from '../../types/NavStack';
-import {styles} from './Shared.styles';
-import {homeScreenStyles} from './HomeScreen.styles';
+import {HomeProps} from '../../../types/navstack/root/index.types';
+import {styles} from '../../shared/index.styles';
+import {homeScreenStyles} from './index.styles';
 
 export default function HomeScreen({route, navigation}: HomeProps) {
   return (

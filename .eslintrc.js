@@ -7,8 +7,8 @@ module.exports = {
     {
       files: ['*.ts', '*.tsx'],
       rules: {
-        'no-shadow': ['error'],
-        'no-undef': ['error'],
+        '@typescript/no-shadow': ['error'],
+        '@typescript/no-undef': ['error'],
       },
     },
   ],

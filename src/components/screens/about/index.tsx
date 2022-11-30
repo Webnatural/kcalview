@@ -1,8 +1,8 @@
 import React from 'react';
 import {TouchableOpacity, View, Text} from 'react-native';
-import {AboutProps} from '../../types/NavStack';
-import {aboutScreenStyles} from './AboutScreen.styles';
-import {styles} from './Shared.styles';
+import {AboutProps} from '../../../types/navstack/root/index.types';
+import {aboutScreenStyles} from './index.styles';
+import {styles} from '../../shared/index.styles';
 
 export default function AboutScreen({route, navigation}: AboutProps) {
   return (

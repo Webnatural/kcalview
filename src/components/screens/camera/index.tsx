@@ -1,8 +1,8 @@
 import React from 'react';
 import {useMemo} from 'react';
 import uuid from 'react-uuid';
-import {CameraProps} from '../../types/NavStack';
-import {overlayStyles, textStyles} from './CameraScreen.styles';
+import {CameraProps} from '../../../components/navstack/root/index.types';
+import {overlayStyles, textStyles} from './index.styles';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {runOnJS} from 'react-native-reanimated';
 import {
