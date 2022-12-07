@@ -45,6 +45,7 @@ export default function CameraScreen({route, navigation}: Props) {
     return (
       <>
         {ocr?.result.blocks.map(block => {
+          console.log(block.lines[0].frame.height);
           return (
             <TouchableOpacity
               key={uuid()}
@@ -59,7 +60,13 @@ export default function CameraScreen({route, navigation}: Props) {
                   top: block.frame.y * pixelRatio,
                 },
               ]}>
-              <Text style={[cameraStyles.text]}>{block.text}</Text>
+              <Text
+                style={[
+                  cameraStyles.text,
+                  {fontSize: block.lines[0].frame.height - 16}, // 8 * 2 is the vertical padding amount
+                ]}>
+                {block.text}
+              </Text>
             </TouchableOpacity>
           );
         })}
@@ -74,7 +81,9 @@ export default function CameraScreen({route, navigation}: Props) {
         frameProcessor={frameProcessor}
         device={device}
         isActive
-        frameProcessorFps={5}
+        frameProcessorFps={1}
+        orientation="portrait"
+        //orientation="landscapeLeft" // 'portrait' | 'portraitUpsideDown' | 'landscapeLeft' | 'landscapeRight';
         onLayout={(event: LayoutChangeEvent) => {
           setPixelRatio(
             event.nativeEvent.layout.width /
