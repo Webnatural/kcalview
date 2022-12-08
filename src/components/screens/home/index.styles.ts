@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-export const homeStyles = StyleSheet.create({
+export const styles = StyleSheet.create({
   homeScreenContainer: {
     flex: 1,
     alignItems: 'center',

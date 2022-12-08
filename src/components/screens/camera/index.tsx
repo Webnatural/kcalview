@@ -2,10 +2,10 @@ import React from 'react';
 import {useMemo, useRef, useState} from 'react';
 import uuid from 'react-uuid';
 import {Props} from './index.types';
-import {cameraStyles} from './index.styles';
+import {styles} from './index.styles';
 import Clipboard from '@react-native-clipboard/clipboard';
 import BottomButtons from './components/BottomButtons';
-// import ImagePreview from './components/ImagePreview';
+import ImagePreview from './components/ImagePreview';
 import {runOnJS} from 'react-native-reanimated';
 import {
   StyleSheet,
@@ -27,20 +27,22 @@ export default function CameraScreen({route, navigation}: Props) {
   const [hasPermission, setHasPermission] = useState(false);
   const [ocr, setOcr] = useState<OCRFrame>();
   const [pixelRatio, setPixelRatio] = useState(1);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const devices = useCameraDevices();
   const device = useMemo(() => devices.back, [devices.back]);
   const cameraRef = useRef<Camera>(null);
 
   const takePic = async () => {
     try {
-      if (cameraRef.current === null) throw new Error('Camera Ref is Null');
+      if (cameraRef.current === null) throw new Error('cameraRef is null');
       console.log('Photo is being taken');
       const options = {quality: 0.95, skipMetadata: true, base64: true};
       const photo = await cameraRef.current.takeSnapshot(options);
+
+      if (photo?.path) setPreviewImage(photo.path);
       if (photo) {
-        console.log('picture source', photo);
+        console.log('Picture source', photo);
       }
-      console.log(photo);
     } catch (error) {
       console.log(error);
     }
@@ -72,7 +74,7 @@ export default function CameraScreen({route, navigation}: Props) {
                 Alert.alert(`"${block.text}" copied to the clipboard`);
               }}
               style={[
-                cameraStyles.touchable,
+                styles.touchable,
                 {
                   left: block.frame.x * pixelRatio,
                   top: block.frame.y * pixelRatio,
@@ -80,7 +82,7 @@ export default function CameraScreen({route, navigation}: Props) {
               ]}>
               <Text
                 style={[
-                  cameraStyles.text,
+                  styles.text,
                   {
                     fontSize: lineHeight < 24 ? 8 : lineHeight - 16,
                   }, // 8 * 2 is the vertical padding amount
@@ -114,7 +116,9 @@ export default function CameraScreen({route, navigation}: Props) {
           );
         }}
       />
-      <BottomButtons takePic={takePic} />
+      {previewImage && <ImagePreview path={previewImage} />}
+
+      <BottomButtons takePic={takePic} previewImage={previewImage} />
       {renderOverlay()}
     </>
   ) : (

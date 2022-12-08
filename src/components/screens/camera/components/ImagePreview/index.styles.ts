@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
-  BottomButtonsContainer: {
+  ImagePreviewContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',

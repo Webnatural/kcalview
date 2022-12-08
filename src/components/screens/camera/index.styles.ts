@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {TextBlock} from './index.types';
 
-export const cameraStyles = StyleSheet.create({
+export const styles = StyleSheet.create({
   touchable: {
     position: 'absolute',
     backgroundColor: 'rgba(0,0,0,0.1)',

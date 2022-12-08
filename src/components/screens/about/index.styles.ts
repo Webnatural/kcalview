@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-export const aboutStyles = StyleSheet.create({
+export const styles = StyleSheet.create({
   aboutScreenContainer: {
     flex: 1,
     alignItems: 'center',

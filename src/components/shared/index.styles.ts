@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-export const styles = StyleSheet.create({
+export const sharedStyles = StyleSheet.create({
   fullWidthButton: {
     height: 70,
     flexDirection: 'row',

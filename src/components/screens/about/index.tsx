@@ -1,21 +1,21 @@
 import React from 'react';
 import {TouchableOpacity, View, Text} from 'react-native';
 import {Props} from './index.types';
-import {aboutStyles} from './index.styles';
-import {styles} from '../../shared/index.styles';
+import {styles} from './index.styles';
+import {sharedStyles} from '../../shared/index.styles';
 
 export default function AboutScreen({route, navigation}: Props) {
   return (
-    <View style={aboutStyles.aboutScreenContainer}>
+    <View style={styles.aboutScreenContainer}>
       <TouchableOpacity
-        style={styles.fullWidthButton}
+        style={sharedStyles.fullWidthButton}
         onPress={() => navigation.navigate('Home')}>
-        <Text style={styles.fullWidthButtonText}>Go home</Text>
+        <Text style={sharedStyles.fullWidthButtonText}>Go home</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={styles.fullWidthButton}
+        style={sharedStyles.fullWidthButton}
         onPress={() => navigation.goBack()}>
-        <Text style={styles.fullWidthButtonText}>Go back</Text>
+        <Text style={sharedStyles.fullWidthButtonText}>Go back</Text>
       </TouchableOpacity>
     </View>
   );
