@@ -1,9 +1,11 @@
 import React from 'react';
-import {useMemo} from 'react';
+import {useMemo, useRef, useState} from 'react';
 import uuid from 'react-uuid';
 import {Props} from './index.types';
 import {cameraStyles} from './index.styles';
 import Clipboard from '@react-native-clipboard/clipboard';
+import BottomButtons from './components/BottomButtons';
+// import ImagePreview from './components/ImagePreview';
 import {runOnJS} from 'react-native-reanimated';
 import {
   StyleSheet,
@@ -22,11 +24,27 @@ import {
 } from 'react-native-vision-camera';
 
 export default function CameraScreen({route, navigation}: Props) {
-  const [hasPermission, setHasPermission] = React.useState(false);
-  const [ocr, setOcr] = React.useState<OCRFrame>();
-  const [pixelRatio, setPixelRatio] = React.useState(1);
+  const [hasPermission, setHasPermission] = useState(false);
+  const [ocr, setOcr] = useState<OCRFrame>();
+  const [pixelRatio, setPixelRatio] = useState(1);
   const devices = useCameraDevices();
   const device = useMemo(() => devices.back, [devices.back]);
+  const cameraRef = useRef<Camera>(null);
+
+  const takePic = async () => {
+    try {
+      if (cameraRef.current === null) throw new Error('Camera Ref is Null');
+      console.log('Photo is being taken');
+      const options = {quality: 0.95, skipMetadata: true, base64: true};
+      const photo = await cameraRef.current.takeSnapshot(options);
+      if (photo) {
+        console.log('picture source', photo);
+      }
+      console.log(photo);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const frameProcessor = useFrameProcessor(frame => {
     'worklet';
@@ -45,7 +63,7 @@ export default function CameraScreen({route, navigation}: Props) {
     return (
       <>
         {ocr?.result.blocks.map(block => {
-          console.log(block.lines[0].frame.height);
+          const lineHeight = block.lines[0].frame.height;
           return (
             <TouchableOpacity
               key={uuid()}
@@ -63,7 +81,9 @@ export default function CameraScreen({route, navigation}: Props) {
               <Text
                 style={[
                   cameraStyles.text,
-                  {fontSize: block.lines[0].frame.height - 16}, // 8 * 2 is the vertical padding amount
+                  {
+                    fontSize: lineHeight < 24 ? 8 : lineHeight - 16,
+                  }, // 8 * 2 is the vertical padding amount
                 ]}>
                 {block.text}
               </Text>
@@ -80,10 +100,11 @@ export default function CameraScreen({route, navigation}: Props) {
         style={[StyleSheet.absoluteFill]}
         frameProcessor={frameProcessor}
         device={device}
+        ref={cameraRef}
         isActive
         frameProcessorFps={1}
         orientation="portrait"
-        //orientation="landscapeLeft" // 'portrait' | 'portraitUpsideDown' | 'landscapeLeft' | 'landscapeRight';
+        photo
         onLayout={(event: LayoutChangeEvent) => {
           setPixelRatio(
             event.nativeEvent.layout.width /
@@ -93,6 +114,7 @@ export default function CameraScreen({route, navigation}: Props) {
           );
         }}
       />
+      <BottomButtons takePic={takePic} />
       {renderOverlay()}
     </>
   ) : (
