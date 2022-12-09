@@ -4,14 +4,17 @@ import {sharedStyles} from '../../../../shared/index.styles';
 import {styles} from './index.styles';
 import {Props} from './index.types';
 
-export default function BottomButtons({takePic, previewImage}: Props) {
+export default function BottomButtons({
+  takePic,
+  previewImage,
+  setPreviewImage,
+}: Props) {
   return (
     <View style={styles.BottomButtonsContainer}>
       {previewImage ? (
         <TouchableOpacity
           style={sharedStyles.fullWidthButton}
-          // onPress={setPreviewImage(null)}
-        >
+          onPress={() => setPreviewImage(null)}>
           <Text style={sharedStyles.fullWidthButtonText}>Cancel</Text>
         </TouchableOpacity>
       ) : (

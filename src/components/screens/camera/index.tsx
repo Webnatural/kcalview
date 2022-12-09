@@ -118,7 +118,11 @@ export default function CameraScreen({route, navigation}: Props) {
       />
       {previewImage && <ImagePreview path={previewImage} />}
 
-      <BottomButtons takePic={takePic} previewImage={previewImage} />
+      <BottomButtons
+        takePic={takePic}
+        previewImage={previewImage}
+        setPreviewImage={setPreviewImage}
+      />
       {renderOverlay()}
     </>
   ) : (
