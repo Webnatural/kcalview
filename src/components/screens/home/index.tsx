@@ -1,22 +1,30 @@
 import React from 'react';
 import {TouchableOpacity, View, Text} from 'react-native';
-import {Props} from './index.types';
 import {sharedStyles} from '../../shared/index.styles';
 import {styles} from './index.styles';
+import {Button} from 'react-native-paper';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../navstack/root/index.types';
 
-export default function HomeScreen({route, navigation}: Props) {
+type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
+
+export default function HomeScreen({navigation}: HomeProps) {
   return (
     <View style={styles.homeScreenContainer}>
-      <TouchableOpacity
-        style={sharedStyles.fullWidthButton}
+      <Button
+        icon="camera"
+        mode="contained"
+        // style={sharedStyles.fullWidthButton}
         onPress={() => navigation.navigate('Camera')}>
-        <Text style={sharedStyles.fullWidthButtonText}>Camera</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={sharedStyles.fullWidthButton}
+        Camera
+      </Button>
+      <Button
+        icon="home"
+        mode="contained"
+        // style={sharedStyles.fullWidthButton}
         onPress={() => navigation.navigate('About')}>
-        <Text style={sharedStyles.fullWidthButtonText}>About</Text>
-      </TouchableOpacity>
+        About
+      </Button>
     </View>
   );
 }

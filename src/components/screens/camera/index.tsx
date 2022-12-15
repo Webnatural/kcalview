@@ -1,7 +1,5 @@
-import React from 'react';
-import {useMemo, useRef, useState} from 'react';
+import React, {useCallback, useMemo, useEffect, useRef, useState} from 'react';
 import uuid from 'react-uuid';
-import {Props} from './index.types';
 import {styles} from './index.styles';
 import Clipboard from '@react-native-clipboard/clipboard';
 import BottomButtons from './components/BottomButtons';
@@ -23,7 +21,7 @@ import {
   Camera,
 } from 'react-native-vision-camera';
 
-export default function CameraScreen({route, navigation}: Props) {
+export default function CameraScreen() {
   const [hasPermission, setHasPermission] = useState(false);
   const [ocr, setOcr] = useState<OCRFrame>();
   const [pixelRatio, setPixelRatio] = useState(1);
@@ -32,98 +30,105 @@ export default function CameraScreen({route, navigation}: Props) {
   const device = useMemo(() => devices.back, [devices.back]);
   const cameraRef = useRef<Camera>(null);
 
-  const takePic = async () => {
-    try {
-      if (cameraRef.current === null) throw new Error('cameraRef is null');
-      console.log('Photo is being taken');
-      const options = {quality: 0.95, skipMetadata: true, base64: true};
-      const photo = await cameraRef.current.takeSnapshot(options);
-
-      if (photo?.path) setPreviewImage(photo.path);
-      if (photo) {
-        console.log('Picture source', photo);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const frameProcessor = useFrameProcessor(frame => {
     'worklet';
     const data = scanOCR(frame);
     runOnJS(setOcr)(data);
   }, []);
 
-  React.useEffect(() => {
+  const takePic = async () => {
+    try {
+      if (!cameraRef.current) return;
+
+      const photo = await cameraRef.current.takeSnapshot({
+        quality: 0.95,
+        skipMetadata: true,
+      });
+
+      setPreviewImage(photo.path);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
     (async () => {
       const status = await Camera.requestCameraPermission();
       setHasPermission(status === 'authorized');
     })();
   }, []);
 
-  const renderOverlay = () => {
-    return (
-      <>
-        {ocr?.result.blocks.map(block => {
-          const lineHeight = block.lines[0].frame.height;
-          return (
-            <TouchableOpacity
-              key={uuid()}
-              onPress={() => {
-                Clipboard.setString(block.text);
-                Alert.alert(`"${block.text}" copied to the clipboard`);
-              }}
-              style={[
-                styles.touchable,
-                {
-                  left: block.frame.x * pixelRatio,
-                  top: block.frame.y * pixelRatio,
-                },
-              ]}>
-              <Text
-                style={[
-                  styles.text,
-                  {
-                    fontSize: lineHeight < 24 ? 8 : lineHeight - 16,
-                  }, // 8 * 2 is the vertical padding amount
-                ]}>
-                {block.text}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </>
-    );
-  };
+  const renderOverlay = useCallback(() => {
+    if (!ocr) return null;
+
+    return ocr?.result.blocks.map(block => {
+      const lineHeight = block.lines[0].frame.height;
+      return (
+        <TouchableOpacity
+          key={uuid()}
+          onPress={() => {
+            Clipboard.setString(block.text);
+            Alert.alert(`"${block.text}" copied to the clipboard`);
+          }}
+          style={[
+            styles.touchable,
+            {
+              left: block.frame.x * pixelRatio,
+              top: block.frame.y * pixelRatio,
+            },
+          ]}>
+          <Text
+            style={[
+              styles.text,
+              {
+                fontSize: lineHeight < 24 ? 8 : lineHeight - 16,
+              }, // 8 * 2 is the vertical padding amount
+            ]}>
+            {block.text}
+          </Text>
+        </TouchableOpacity>
+      );
+    });
+  }, [ocr?.result.blocks, pixelRatio]);
 
   return device && hasPermission ? (
     <>
-      <Camera
-        style={[StyleSheet.absoluteFill]}
-        frameProcessor={frameProcessor}
-        device={device}
-        ref={cameraRef}
-        isActive
-        frameProcessorFps={1}
-        orientation="portrait"
-        photo
-        onLayout={(event: LayoutChangeEvent) => {
-          setPixelRatio(
-            event.nativeEvent.layout.width /
-              PixelRatio.getPixelSizeForLayoutSize(
-                event.nativeEvent.layout.width,
-              ),
-          );
-        }}
-      />
-      {previewImage && <ImagePreview path={previewImage} />}
+      {!previewImage && (
+        <Camera
+          style={[StyleSheet.absoluteFill]}
+          frameProcessor={frameProcessor}
+          device={device}
+          ref={cameraRef}
+          isActive
+          frameProcessorFps={1}
+          orientation="portrait"
+          photo
+          onLayout={({
+            nativeEvent: {
+              layout: {width},
+            },
+          }: LayoutChangeEvent) => {
+            setPixelRatio(width / PixelRatio.getPixelSizeForLayoutSize(width));
+          }}
+        />
+      )}
 
-      <BottomButtons
-        takePic={takePic}
-        previewImage={previewImage}
-        setPreviewImage={setPreviewImage}
-      />
-      {renderOverlay()}
+      {previewImage && (
+        <ImagePreview
+          previewImage={previewImage}
+          setPreviewImage={setPreviewImage}
+        />
+      )}
+
+      {!previewImage && (
+        <BottomButtons
+          takePic={takePic}
+          previewImage={previewImage}
+          setPreviewImage={setPreviewImage}
+        />
+      )}
+
+      {!previewImage && renderOverlay()}
     </>
   ) : (
     <View>

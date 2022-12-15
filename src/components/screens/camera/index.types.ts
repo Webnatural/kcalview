@@ -38,4 +38,4 @@ export type Text = {
   blocks: TextBlock[];
 };
 
-export type Props = NativeStackScreenProps<RootStackParamList, 'Camera'>;
+export type CameraProps = NativeStackScreenProps<RootStackParamList, 'Camera'>;

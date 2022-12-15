@@ -1,28 +1,28 @@
 import React from 'react';
 import {TouchableOpacity, View, Text} from 'react-native';
+import {IconButton} from 'react-native-paper';
 import {sharedStyles} from '../../../../shared/index.styles';
+import ImagePreview from '../ImagePreview';
 import {styles} from './index.styles';
-import {Props} from './index.types';
+
+type BottomButtonProps = {
+  takePic: () => Promise<void>;
+  previewImage?: string | null;
+  setPreviewImage: (value: string | null) => void;
+};
 
 export default function BottomButtons({
   takePic,
   previewImage,
-  setPreviewImage,
-}: Props) {
+}: BottomButtonProps) {
   return (
     <View style={styles.BottomButtonsContainer}>
-      {previewImage ? (
-        <TouchableOpacity
-          style={sharedStyles.fullWidthButton}
-          onPress={() => setPreviewImage(null)}>
-          <Text style={sharedStyles.fullWidthButtonText}>Cancel</Text>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          style={sharedStyles.fullWidthButton}
-          onPress={async () => takePic()}>
-          <Text style={sharedStyles.fullWidthButtonText}>Take photo</Text>
-        </TouchableOpacity>
+      {!previewImage && (
+        <IconButton
+          icon="camera"
+          mode="contained"
+          style={[{position: 'absolute', bottom: 10}]}
+          onPress={takePic}></IconButton>
       )}
     </View>
   );
