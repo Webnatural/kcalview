@@ -35,7 +35,7 @@ export default function ImagePreview({
   ) : (
     <View style={styles.ImagePreviewContainer}>
       <Image source={{uri: 'file://' + previewImage}} style={[styles.Image]} />
-      {result && <TextMap blocks={result.blocks} />}
+      {result && <TextMap text={result.text} blocks={result.blocks} />}
       <IconButton
         style={styles.CloseButton}
         mode="contained"

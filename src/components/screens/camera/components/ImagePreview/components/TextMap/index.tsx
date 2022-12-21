@@ -5,7 +5,8 @@ import {TouchableOpacity, Text} from 'react-native';
 import {TextRecognitionResult} from '@react-native-ml-kit/text-recognition';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-export default function TextMap({blocks}: TextRecognitionResult) {
+export default function TextMap({text, blocks}: TextRecognitionResult) {
+  console.log(text);
   return (
     <>
       {blocks.map(block => (
