@@ -9,12 +9,12 @@
     "allowSyntheticDefaultImports": true,
         "baseUrl": "./",
     "paths": {
-      "@components": ["./components"],
-      "@screens": ["./screens"],
-      "@/": ["./src"],
-      "@/*": ["./*"],
-      "@kcalview/": ["./"],
       "@kcalview/*": ["./*"],
+      "@components/*": ["./src/components/*"],
+      "@navstack/*": ["./src/components/navstack/*"],
+      "@shared/*": ["./src/components/shared/*"],
+      "@screens/*": ["./screens/*"],
+      "@/*": ["./*"],
     }
 
   }

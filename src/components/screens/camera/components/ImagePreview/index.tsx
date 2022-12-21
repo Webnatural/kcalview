@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Image, ActivityIndicator} from 'react-native';
-import {IconButton, Button} from 'react-native-paper';
+import {IconButton} from 'react-native-paper';
 import {styles} from './index.styles';
 import TextRecognition, {
   TextRecognitionResult,
