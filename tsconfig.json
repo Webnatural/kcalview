@@ -13,7 +13,7 @@
       "@components/*": ["./src/components/*"],
       "@navstack/*": ["./src/components/navstack/*"],
       "@shared/*": ["./src/components/shared/*"],
-      "@screens/*": ["./screens/*"],
+      "@screens/*": ["./src/components/screens/*"],
       "@/*": ["./*"],
     }
 

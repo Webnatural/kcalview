@@ -3,10 +3,10 @@ import {
   createNativeStackNavigator,
   NativeStackHeaderProps,
 } from '@react-navigation/native-stack';
-import HomeScreen from '../../screens/home';
-import CameraScreen from '../../screens/camera';
-import AboutScreen from '../../screens/about';
-import {RootStackParamList} from '../../navstack/root/index.types';
+import HomeScreen from '@screens/home';
+import CameraScreen from '@screens/camera';
+import AboutScreen from '@screens/about';
+import {RootStackParamList} from './index.types';
 
 import {Appbar} from 'react-native-paper';
 
