@@ -30,6 +30,8 @@ export default function ImagePreview({
 
   return loading ? (
     <View style={styles.ImagePreviewContainer}>
+      <Image source={{uri: 'file://' + previewImage}} style={[styles.Image]} />
+      {result && <TextMap text={result.text} blocks={result.blocks} />}
       <ActivityIndicator />
     </View>
   ) : (

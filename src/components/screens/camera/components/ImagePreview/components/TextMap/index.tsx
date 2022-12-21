@@ -6,23 +6,20 @@ import {TextRecognitionResult} from '@react-native-ml-kit/text-recognition';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 export default function TextMap({text, blocks}: TextRecognitionResult) {
-  console.log(text);
+  blocks.map(block =>
+    block.lines.map(line => line.elements.map(el => console.log(el.text))),
+  );
+
   return (
     <>
-      {blocks.map(block => (
-        <React.Fragment key={uuid()}>
-          <TouchableOpacity
-            onPress={() => {
-              Clipboard.setString(block.text);
-              console.log(block.text);
-            }}
-            style={[styles.text, block.frame]}>
-            <Text>{block.text}</Text>
-          </TouchableOpacity>
-          {/* Lines will be useful for creating lists of items */}
-          {/* {block.lines.map(line => line.elements.map(el => console.log(el)))} */}
-        </React.Fragment>
-      ))}
+      <TouchableOpacity
+        key={uuid()}
+        onPress={() => {
+          Clipboard.setString(text);
+        }}
+        style={styles.touchable}>
+        <Text>{text}</Text>
+      </TouchableOpacity>
     </>
   );
 }
