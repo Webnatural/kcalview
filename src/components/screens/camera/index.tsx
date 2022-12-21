@@ -68,7 +68,7 @@ export default function CameraScreen() {
           key={uuid()}
           onPress={() => {
             Clipboard.setString(block.text);
-            Alert.alert(`"${block.text}" copied to the clipboard`);
+            console.log(`"${block.text}" copied to the clipboard`);
           }}
           style={[
             styles.touchable,
