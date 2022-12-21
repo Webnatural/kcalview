@@ -1,6 +1,3 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../../navstack/root/index.types';
-
 export type BoundingFrame = {
   x: number;
   y: number;
@@ -33,9 +30,7 @@ export type TextBlock = {
   recognizedLanguages: string[];
   cornerPoints: Point[];
 };
-export type Text = {
+export type WholeText = {
   text: string;
   blocks: TextBlock[];
 };
-
-export type CameraProps = NativeStackScreenProps<RootStackParamList, 'Camera'>;

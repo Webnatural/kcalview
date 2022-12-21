@@ -1,8 +1,11 @@
-import React from 'react';
-import {TouchableOpacity, View, Text, Image, ScrollView} from 'react-native';
-import {IconButton} from 'react-native-paper';
-import {sharedStyles} from '../../../../shared/index.styles';
+import React, {useState, useEffect} from 'react';
+import {View, Image, ActivityIndicator} from 'react-native';
+import {IconButton, Button} from 'react-native-paper';
 import {styles} from './index.styles';
+import TextRecognition, {
+  TextRecognitionResult,
+} from '@react-native-ml-kit/text-recognition';
+import TextMap from './components/TextMap';
 
 type ImagePreviewProps = {
   previewImage: string;
@@ -13,14 +16,30 @@ export default function ImagePreview({
   previewImage,
   setPreviewImage,
 }: ImagePreviewProps) {
-  return (
-    <View style={[{flex: 1}]}>
-      <Image source={{uri: 'file://' + previewImage}} style={[{flex: 1}]} />
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<TextRecognitionResult>();
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const result = await TextRecognition.recognize('file://' + previewImage);
+      setResult(result);
+      setLoading(false);
+    })();
+  }, []);
+
+  return loading ? (
+    <View style={styles.ImagePreviewContainer}>
+      <ActivityIndicator />
+    </View>
+  ) : (
+    <View style={styles.ImagePreviewContainer}>
+      <Image source={{uri: 'file://' + previewImage}} style={[styles.Image]} />
+      {result && <TextMap blocks={result.blocks} />}
       <IconButton
-        style={[{position: 'absolute', top: 0, end: 0}]}
+        style={styles.CloseButton}
         mode="contained"
         icon="close"
-        // iconColor="white"
         onPress={() => setPreviewImage(null)}
       />
     </View>

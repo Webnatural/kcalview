@@ -1,8 +1,6 @@
 import React from 'react';
-import {TouchableOpacity, View, Text} from 'react-native';
+import {View} from 'react-native';
 import {IconButton} from 'react-native-paper';
-import {sharedStyles} from '../../../../shared/index.styles';
-import ImagePreview from '../ImagePreview';
 import {styles} from './index.styles';
 
 type BottomButtonProps = {

@@ -1,5 +1,4 @@
 import {StyleSheet} from 'react-native';
-import {TextBlock} from './index.types';
 
 export const styles = StyleSheet.create({
   touchable: {

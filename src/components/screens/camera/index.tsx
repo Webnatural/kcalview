@@ -120,6 +120,8 @@ export default function CameraScreen() {
         />
       )}
 
+      {!previewImage && renderOverlay()}
+
       {!previewImage && (
         <BottomButtons
           takePic={takePic}
@@ -127,8 +129,6 @@ export default function CameraScreen() {
           setPreviewImage={setPreviewImage}
         />
       )}
-
-      {!previewImage && renderOverlay()}
     </>
   ) : (
     <View>
