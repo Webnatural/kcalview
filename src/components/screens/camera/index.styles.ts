@@ -12,4 +12,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     textAlign: 'center',
   },
+  minText: {
+    fontSize: 8,
+    justifyContent: 'center',
+    textAlign: 'center',
+  },
 });

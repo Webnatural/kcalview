@@ -1,27 +1,29 @@
 import React from 'react';
-import {View} from 'react-native';
-import {IconButton} from 'react-native-paper';
-import {styles} from './index.styles';
+import { View } from 'react-native';
+import { IconButton } from 'react-native-paper';
+import { styles } from './index.styles';
 
 type BottomButtonProps = {
   takePic: () => Promise<void>;
-  previewImage?: string | null;
-  setPreviewImage: (value: string | null) => void;
+  previewImgPath: string | null;
 };
 
 export default function BottomButtons({
   takePic,
-  previewImage,
+  previewImgPath,
 }: BottomButtonProps) {
+
   return (
-    <View style={styles.BottomButtonsContainer}>
-      {!previewImage && (
-        <IconButton
-          icon="camera"
-          mode="contained"
-          style={[{position: 'absolute', bottom: 10}]}
-          onPress={takePic}></IconButton>
+    <>
+      {!previewImgPath && (
+        <View style={styles.BottomButtonsContainer}>
+          <IconButton
+            icon="camera"
+            mode="contained"
+            style={[styles.CloseButton]}
+            onPress={takePic}></IconButton>
+        </View>
       )}
-    </View>
+    </>
   );
 }

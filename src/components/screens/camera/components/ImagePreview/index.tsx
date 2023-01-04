@@ -1,49 +1,42 @@
-import React, {useState, useEffect} from 'react';
-import {View, Image, ActivityIndicator} from 'react-native';
-import {IconButton} from 'react-native-paper';
-import {styles} from './index.styles';
-import TextRecognition, {
-  TextRecognitionResult,
-} from '@react-native-ml-kit/text-recognition';
+import React, { useState, useEffect } from 'react';
+import { View, Image, ActivityIndicator } from 'react-native';
+import { IconButton } from 'react-native-paper';
+import { TextRecognitionResult } from '@react-native-ml-kit/text-recognition';
+
+import { styles } from './index.styles';
 import TextMap from './components/TextMap';
 
 type ImagePreviewProps = {
-  previewImage: string;
-  setPreviewImage: (value: string | null) => void;
+  previewImgPath: string;
+  setpreviewImgPath: (value: string | null) => void;
+  textFromImage: TextRecognitionResult | null;
 };
 
 export default function ImagePreview({
-  previewImage,
-  setPreviewImage,
+  previewImgPath,
+  setpreviewImgPath,
+  textFromImage
 }: ImagePreviewProps) {
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<TextRecognitionResult>();
-
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const result = await TextRecognition.recognize('file://' + previewImage);
-      setResult(result);
-      setLoading(false);
-    })();
-  }, []);
-
-  return loading ? (
+  return (
     <View style={styles.ImagePreviewContainer}>
-      <Image source={{uri: 'file://' + previewImage}} style={[styles.Image]} />
-      {result && <TextMap text={result.text} blocks={result.blocks} />}
-      <ActivityIndicator />
-    </View>
-  ) : (
-    <View style={styles.ImagePreviewContainer}>
-      <Image source={{uri: 'file://' + previewImage}} style={[styles.Image]} />
-      {result && <TextMap text={result.text} blocks={result.blocks} />}
-      <IconButton
-        style={styles.CloseButton}
-        mode="contained"
-        icon="close"
-        onPress={() => setPreviewImage(null)}
-      />
+      <>
+        <Image source={{ uri: 'file://' + previewImgPath }} style={[styles.Image]} />
+        {console.log(textFromImage)}
+
+        {!textFromImage ? (
+          <ActivityIndicator />
+        ) : (
+          <>
+            <TextMap text={textFromImage.text} blocks={textFromImage.blocks} />
+            <IconButton
+              style={styles.CloseButton}
+              mode="contained"
+              icon="close"
+              onPress={() => setpreviewImgPath(null)}
+            />
+          </>
+        )}
+      </>
     </View>
   );
 }

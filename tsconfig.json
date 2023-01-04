@@ -7,7 +7,7 @@
     /* Completeness */
     "skipLibCheck": true, /* Skip type checking all .d.ts files. */
     "allowSyntheticDefaultImports": true,
-        "baseUrl": "./",
+    "baseUrl": "./",
     "paths": {
       "@kcalview/*": ["./*"],
       "@components/*": ["./src/components/*"],

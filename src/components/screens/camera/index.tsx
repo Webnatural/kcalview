@@ -1,55 +1,109 @@
-import React, {useCallback, useMemo, useEffect, useRef, useState} from 'react';
-import uuid from 'react-uuid';
-import {styles} from './index.styles';
+import React, { useCallback, useMemo, useEffect, useRef, useState } from 'react';
+import { runOnJS } from 'react-native-reanimated';
+import uuid from 'react-uuid'; import {
+  LayoutChangeEvent,
+  PixelRatio,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
+import { OCRFrame, scanOCR } from 'vision-camera-ocr';
+import {
+  Camera,
+  useCameraDevices,
+  useFrameProcessor,
+} from 'react-native-vision-camera';
+import TextRecognition, {
+  TextRecognitionResult,
+} from '@react-native-ml-kit/text-recognition';
+
 import Clipboard from '@react-native-clipboard/clipboard';
 import BottomButtons from './components/BottomButtons';
 import ImagePreview from './components/ImagePreview';
-import {runOnJS} from 'react-native-reanimated';
-import {
-  StyleSheet,
-  View,
-  Text,
-  LayoutChangeEvent,
-  PixelRatio,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
-import {OCRFrame, scanOCR} from 'vision-camera-ocr';
-import {
-  useCameraDevices,
-  useFrameProcessor,
-  Camera,
-} from 'react-native-vision-camera';
+import { styles } from './index.styles';
 
 export default function CameraScreen() {
   const [hasPermission, setHasPermission] = useState(false);
   const [ocr, setOcr] = useState<OCRFrame>();
   const [pixelRatio, setPixelRatio] = useState(1);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [previewImgPath, setpreviewImgPath] = useState<string | null>(null);
+  const [textFromImage, setTextFromImage] = useState<TextRecognitionResult | null>(null);
+
+  const cameraRef = useRef<Camera>(null);
+
   const devices = useCameraDevices();
   const device = useMemo(() => devices.back, [devices.back]);
-  const cameraRef = useRef<Camera>(null);
 
   const frameProcessor = useFrameProcessor(frame => {
     'worklet';
-    const data = scanOCR(frame);
-    runOnJS(setOcr)(data);
+    runOnJS(setOcr)(scanOCR(frame));
   }, []);
 
   const takePic = async () => {
     try {
-      if (!cameraRef.current) return;
+      if (!cameraRef.current) {
+        return
+      };
 
       const photo = await cameraRef.current.takeSnapshot({
         quality: 0.95,
         skipMetadata: true,
       });
 
-      setPreviewImage(photo.path);
+      setpreviewImgPath(photo.path);
+
+      const data = await TextRecognition.recognize('file://' + photo.path);
+
+      setTextFromImage(data);
+
     } catch (error) {
+      /** @todo: Weryfikacja błędów */
       console.log(error);
+      return;
     }
   };
+
+  const renderOverlay = useCallback(() => {
+
+    if (!ocr) {
+      return null;
+    }
+
+    return ocr?.result.blocks.map(block => {
+
+      const lineHeight = block.lines[0].frame.height;
+
+      const fontSize: any = lineHeight < 24 ? styles.minText : lineHeight - 16;
+
+      const touchablePos = {
+        left: block.frame.x * pixelRatio,
+        top: block.frame.y * pixelRatio,
+      };
+
+      const copyToClipboard = () => {
+        Clipboard.setString(block.text);
+      }
+
+      return (
+        <TouchableOpacity
+          key={uuid()}
+          onPress={copyToClipboard}
+          style={[
+            styles.touchable,
+            touchablePos
+          ]}>
+          <Text
+            style={[
+              styles.text,
+              fontSize
+            ]}>
+            {block.text}
+          </Text>
+        </TouchableOpacity>
+      );
+    });
+  }, [ocr, pixelRatio]);
 
   useEffect(() => {
     (async () => {
@@ -58,77 +112,42 @@ export default function CameraScreen() {
     })();
   }, []);
 
-  const renderOverlay = useCallback(() => {
-    if (!ocr) return null;
-
-    return ocr?.result.blocks.map(block => {
-      const lineHeight = block.lines[0].frame.height;
-      return (
-        <TouchableOpacity
-          key={uuid()}
-          onPress={() => {
-            Clipboard.setString(block.text);
-            console.log(`"${block.text}" copied to the clipboard`);
-          }}
-          style={[
-            styles.touchable,
-            {
-              left: block.frame.x * pixelRatio,
-              top: block.frame.y * pixelRatio,
-            },
-          ]}>
-          <Text
-            style={[
-              styles.text,
-              {
-                fontSize: lineHeight < 24 ? 8 : lineHeight - 16,
-              }, // 8 * 2 is the vertical padding amount
-            ]}>
-            {block.text}
-          </Text>
-        </TouchableOpacity>
-      );
-    });
-  }, [ocr?.result.blocks, pixelRatio]);
-
   return device && hasPermission ? (
     <>
-      {!previewImage && (
-        <Camera
-          style={[StyleSheet.absoluteFill]}
-          frameProcessor={frameProcessor}
-          device={device}
-          ref={cameraRef}
-          isActive
-          frameProcessorFps={1}
-          orientation="portrait"
-          photo
-          onLayout={({
-            nativeEvent: {
-              layout: {width},
-            },
-          }: LayoutChangeEvent) => {
-            setPixelRatio(width / PixelRatio.getPixelSizeForLayoutSize(width));
-          }}
-        />
-      )}
+      {!previewImgPath ? (
+        <>
+          <Camera
+            style={[StyleSheet.absoluteFill]}
+            frameProcessor={frameProcessor}
+            device={device}
+            ref={cameraRef}
+            isActive
+            frameProcessorFps={1}
+            orientation="portrait"
+            photo
+            onLayout={({
+              nativeEvent: {
+                layout: { width },
+              },
+            }: LayoutChangeEvent) => {
+              setPixelRatio(
+                width / PixelRatio.getPixelSizeForLayoutSize(width),
+              );
+            }}
+          />
+          {renderOverlay()}
+          <BottomButtons takePic={takePic} previewImgPath={previewImgPath} />
+        </>
+      ) : (
 
-      {previewImage && (
         <ImagePreview
-          previewImage={previewImage}
-          setPreviewImage={setPreviewImage}
+          previewImgPath={previewImgPath}
+          setpreviewImgPath={setpreviewImgPath}
+          textFromImage={textFromImage}
+
         />
       )}
 
-      {!previewImage && renderOverlay()}
-
-      {!previewImage && (
-        <BottomButtons
-          takePic={takePic}
-          previewImage={previewImage}
-          setPreviewImage={setPreviewImage}
-        />
-      )}
     </>
   ) : (
     <View>

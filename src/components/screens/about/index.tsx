@@ -1,13 +1,13 @@
 import React from 'react';
-import {TouchableOpacity, View, Text} from 'react-native';
-import {styles} from './index.styles';
-import {sharedStyles} from '@shared/index.styles';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList} from '@navstack/root/index.types';
+import { TouchableOpacity, View, Text } from 'react-native';
+import { styles } from './index.styles';
+import { sharedStyles } from '../../shared/index.styles';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../navstack/root/index.types';
 
 type AboutProps = NativeStackScreenProps<RootStackParamList, 'About'>;
 
-export default function AboutScreen({navigation}: AboutProps) {
+export default function AboutScreen({ navigation }: AboutProps) {
   return (
     <View style={styles.aboutScreenContainer}>
       <TouchableOpacity

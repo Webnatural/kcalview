@@ -5,4 +5,9 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  CloseButton: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+  },
 });

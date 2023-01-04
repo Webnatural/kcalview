@@ -1,6 +1,6 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import NavStack from '@navstack/root';
+import { NavigationContainer } from '@react-navigation/native';
+import NavStack from './components/navstack/root';
 
 import {
   MD3LightTheme as DefaultTheme,
