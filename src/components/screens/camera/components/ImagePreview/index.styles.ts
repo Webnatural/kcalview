@@ -1,17 +1,18 @@
 import {StyleSheet} from 'react-native';
+
 export const styles = StyleSheet.create({
-  ImagePreviewContainer: {
+  imagePreviewContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     background: 'transparent',
   },
-  CloseButton: {
+  closeButton: {
     position: 'absolute',
     top: 0,
     end: 0,
   },
-  Image: {
+  image: {
     flex: 1,
     position: 'absolute',
     top: 0,

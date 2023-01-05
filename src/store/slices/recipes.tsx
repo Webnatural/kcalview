@@ -2,11 +2,11 @@ import { createSlice } from '@reduxjs/toolkit'
 
 interface InitialState {
     recipeList: Array<string>
-}
+};
 
 const initialState: InitialState = {
     recipeList: []
-}
+};
 
 export const recipeSlice = createSlice({
     name: 'recipe',
@@ -20,8 +20,8 @@ export const recipeSlice = createSlice({
             state.recipeList.push(Date.now().toString())
         }
     }
-})
+});
 
-export const { addRecipe, addTimestamp } = recipeSlice.actions
+export const { addRecipe, addTimestamp } = recipeSlice.actions;
 
-export default recipeSlice.reducer
+export default recipeSlice.reducer;

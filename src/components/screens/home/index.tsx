@@ -1,9 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
-import { styles } from './index.styles';
 import { Button } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+
 import { RootStackParamList } from './../../navstack/root/index.types';
+import { styles } from './index.styles';
 
 type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -13,14 +14,13 @@ export default function HomeScreen({ navigation }: HomeProps) {
       <Button
         icon="camera"
         mode="contained"
-        // style={sharedStyles.fullWidthButton}
         onPress={() => navigation.navigate('Camera')}>
         Camera
       </Button>
+
       <Button
         icon="home"
         mode="contained"
-        // style={sharedStyles.fullWidthButton}
         onPress={() => navigation.navigate('About')}>
         About
       </Button>

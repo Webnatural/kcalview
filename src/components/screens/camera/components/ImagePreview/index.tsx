@@ -18,9 +18,9 @@ export default function ImagePreview({
   textFromImage
 }: ImagePreviewProps) {
   return (
-    <View style={styles.ImagePreviewContainer}>
+    <View style={styles.imagePreviewContainer}>
       <>
-        <Image source={{ uri: 'file://' + previewImgPath }} style={[styles.Image]} />
+        <Image source={{ uri: 'file://' + previewImgPath }} style={[styles.image]} />
         {console.log(textFromImage)}
 
         {!textFromImage ? (
@@ -29,7 +29,7 @@ export default function ImagePreview({
           <>
             <TextMap text={textFromImage.text} blocks={textFromImage.blocks} />
             <IconButton
-              style={styles.CloseButton}
+              style={styles.closeButton}
               mode="contained"
               icon="close"
               onPress={() => setPreviewImgPath(null)}

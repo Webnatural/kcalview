@@ -4,6 +4,7 @@ import {
   createNativeStackNavigator,
   NativeStackHeaderProps,
 } from '@react-navigation/native-stack';
+
 import AboutScreen from '../../../components/screens/about';
 import CameraScreen from '../../../components/screens/camera';
 import HomeScreen from '../../../components/screens/home';
@@ -13,7 +14,7 @@ function ThemedNavigationBar({ navigation, back }: NativeStackHeaderProps) {
   return (
     <Appbar.Header>
       {!!back && <Appbar.BackAction onPress={navigation.goBack} />}
-      <Appbar.Content title="ACME App" />
+      <Appbar.Content title="My Recipes" />
     </Appbar.Header>
   );
 }

@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useEffect, useRef, useState } from 'react';
-import { runOnJS } from 'react-native-reanimated';
-import uuid from 'react-uuid'; import {
+import {
   LayoutChangeEvent,
   PixelRatio,
   StyleSheet,
@@ -8,7 +7,8 @@ import uuid from 'react-uuid'; import {
   TouchableOpacity,
   View
 } from 'react-native';
-import { OCRFrame, scanOCR } from 'vision-camera-ocr';
+import { runOnJS } from 'react-native-reanimated';
+import Clipboard from '@react-native-clipboard/clipboard';
 import {
   Camera,
   useCameraDevices,
@@ -17,8 +17,9 @@ import {
 import TextRecognition, {
   TextRecognitionResult,
 } from '@react-native-ml-kit/text-recognition';
+import uuid from 'react-uuid';
+import { OCRFrame, scanOCR } from 'vision-camera-ocr';
 
-import Clipboard from '@react-native-clipboard/clipboard';
 import BottomButtons from './components/BottomButtons';
 import ImagePreview from './components/ImagePreview';
 import { styles } from './index.styles';

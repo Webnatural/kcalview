@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { IconButton } from 'react-native-paper';
+
 import { styles } from './index.styles';
 
 type BottomButtonProps = {
@@ -9,16 +10,15 @@ type BottomButtonProps = {
 };
 
 export default function BottomButtons({
-  takePic,
-  previewImgPath,
+  takePic
 }: BottomButtonProps) {
 
   return (
-    <View style={styles.BottomButtonsContainer}>
+    <View style={styles.bottomButtonsContainer}>
       <IconButton
         icon="camera"
         mode="contained"
-        style={[styles.CloseButton]}
+        style={[styles.takePicButton]}
         onPress={takePic}></IconButton>
     </View>
   );

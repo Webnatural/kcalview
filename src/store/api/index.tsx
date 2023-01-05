@@ -1,11 +1,11 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 type RecipeData = {
     completed: boolean
     id: number
     title: string
     userId: number
-}
+};
 
 export const recipeApiService = createApi({
     reducerPath: 'recipeApi',
@@ -16,6 +16,6 @@ export const recipeApiService = createApi({
             query: (id) => `posts/${id}`,
         }),
     }),
-})
+});
 
-export const { useGetRecipeListQuery } = recipeApiService
+export const { useGetRecipeListQuery } = recipeApiService;

@@ -1,5 +1,5 @@
-import { Middleware } from 'redux'
-import { RootState } from './../index'
+import { Middleware } from 'redux';
+import { RootState } from './../index';
 
 export const loggerMiddlware: Middleware<
     {}, // Most middleware do not modify the dispatch return value
@@ -9,7 +9,7 @@ export const loggerMiddlware: Middleware<
     let result = nextDispatch(action)
     console.log('next state', store.getState())
     return result
-}
+};
 
 export const testMiddlware: Middleware<
     {}, // Most middleware do not modify the dispatch return value
@@ -19,4 +19,4 @@ export const testMiddlware: Middleware<
     let result = nextDispatch(action)
     console.log('after dispatching test')
     return result
-}
+};

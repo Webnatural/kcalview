@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+
 export const sharedStyles = StyleSheet.create({
   fullWidthButton: {
     height: 70,
