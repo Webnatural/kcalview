@@ -27,7 +27,7 @@ export default function CameraScreen() {
   const [hasPermission, setHasPermission] = useState(false);
   const [ocr, setOcr] = useState<OCRFrame>();
   const [pixelRatio, setPixelRatio] = useState(1);
-  const [previewImgPath, setpreviewImgPath] = useState<string | null>(null);
+  const [previewImgPath, setPreviewImgPath] = useState<string | null>(null);
   const [textFromImage, setTextFromImage] = useState<TextRecognitionResult | null>(null);
 
   const cameraRef = useRef<Camera>(null);
@@ -51,7 +51,7 @@ export default function CameraScreen() {
         skipMetadata: true,
       });
 
-      setpreviewImgPath(photo.path);
+      setPreviewImgPath(photo.path);
 
       const data = await TextRecognition.recognize('file://' + photo.path);
 
@@ -142,7 +142,7 @@ export default function CameraScreen() {
 
         <ImagePreview
           previewImgPath={previewImgPath}
-          setpreviewImgPath={setpreviewImgPath}
+          setPreviewImgPath={setPreviewImgPath}
           textFromImage={textFromImage}
 
         />

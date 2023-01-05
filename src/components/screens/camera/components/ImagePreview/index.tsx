@@ -8,13 +8,13 @@ import TextMap from './components/TextMap';
 
 type ImagePreviewProps = {
   previewImgPath: string;
-  setpreviewImgPath: (value: string | null) => void;
+  setPreviewImgPath: (value: string | null) => void;
   textFromImage: TextRecognitionResult | null;
 };
 
 export default function ImagePreview({
   previewImgPath,
-  setpreviewImgPath,
+  setPreviewImgPath,
   textFromImage
 }: ImagePreviewProps) {
   return (
@@ -32,7 +32,7 @@ export default function ImagePreview({
               style={styles.CloseButton}
               mode="contained"
               icon="close"
-              onPress={() => setpreviewImgPath(null)}
+              onPress={() => setPreviewImgPath(null)}
             />
           </>
         )}

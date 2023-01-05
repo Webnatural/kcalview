@@ -12,7 +12,7 @@ import { RootStackParamList } from './index.types';
 function ThemedNavigationBar({ navigation, back }: NativeStackHeaderProps) {
   return (
     <Appbar.Header>
-      {back ? <Appbar.BackAction onPress={navigation.goBack} /> : null}
+      {!!back && <Appbar.BackAction onPress={navigation.goBack} />}
       <Appbar.Content title="ACME App" />
     </Appbar.Header>
   );

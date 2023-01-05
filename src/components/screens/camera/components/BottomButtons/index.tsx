@@ -14,16 +14,12 @@ export default function BottomButtons({
 }: BottomButtonProps) {
 
   return (
-    <>
-      {!previewImgPath && (
-        <View style={styles.BottomButtonsContainer}>
-          <IconButton
-            icon="camera"
-            mode="contained"
-            style={[styles.CloseButton]}
-            onPress={takePic}></IconButton>
-        </View>
-      )}
-    </>
+    <View style={styles.BottomButtonsContainer}>
+      <IconButton
+        icon="camera"
+        mode="contained"
+        style={[styles.CloseButton]}
+        onPress={takePic}></IconButton>
+    </View>
   );
 }
