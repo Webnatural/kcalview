@@ -9,13 +9,22 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
     "paths": {
-      "@kcalview/*": ["./*"],
-      "@components/*": ["./src/components/*"],
-      "@navstack/*": ["./src/components/navstack/*"],
-      "@shared/*": ["./src/components/shared/*"],
-      "@screens/*": ["./src/components/screens/*"],
+      "@": ["./"],
       "@/*": ["./*"],
+      "@kcalview": ["./"],
+      "@kcalview/*": ["./*"],
+      "@components": ["./src/components"],
+      "@components/*": ["./src/components/*"],
+      "@navstack": ["./src/components/navstack"],
+      "@navstack/*": ["./src/components/navstack/*"],
+      "@screens": ["./src/components/screens"],
+      "@screens/*": ["./src/components/screens/*"],
+      "@shared": ["./src/components/shared"],
+      "@shared/*": ["./src/components/shared/*"],
+      "@slices": ["./src/store/slices"],
+      "@slices/*": ["./src/store/slices/*"],
+      "@store": ["./src/store"],
+      "@store/*": ["./src/store/*"],
     }
-
   }
 }

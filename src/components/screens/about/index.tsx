@@ -2,9 +2,9 @@ import React from 'react';
 import { TouchableOpacity, View, Text } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import { RootStackParamList } from '../../navstack/root/index.types';
+import { RootStackParamList } from '@navstack/root/index.types';
 import { styles } from './index.styles';
-import { sharedStyles } from '../../shared/index.styles';
+import { sharedStyles } from '@shared/index.styles';
 
 type AboutProps = NativeStackScreenProps<RootStackParamList, 'About'>;
 

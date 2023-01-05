@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 import { configureStore } from '@reduxjs/toolkit';
 
-import { recipeApiService } from './api';
-import { loggerMiddlware, testMiddlware } from './middleware';
-import recipeSlice from './slices/recipes';
+import { recipeApiService } from '@store/api';
+import { loggerMiddlware, testMiddlware } from '@store/middleware';
+import recipeSlice from '@slices/recipes';
 
 const reducers = combineReducers({
     recipeSlice,

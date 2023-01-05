@@ -1,5 +1,5 @@
 import { Middleware } from 'redux';
-import { RootState } from './../index';
+import { RootState } from '@store';
 
 export const loggerMiddlware: Middleware<
     {}, // Most middleware do not modify the dispatch return value

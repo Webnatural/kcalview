@@ -1,26 +1,25 @@
 import React from 'react';
 import { TouchableOpacity, View, Text } from 'react-native';
-import { sharedStyles } from '../../shared/index.styles';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import { RootStackParamList } from '../../navstack/root/index.types';
+import { useAppSelector, useAppDispatch } from '@store/hooks';
+import { addTimestamp, addRecipe } from '@slices/recipes';
+import { RootStackParamList } from '@navstack/root/index.types';
 import { styles } from './index.styles';
 
-type AboutProps = NativeStackScreenProps<RootStackParamList, 'About'>;
+type RecipesProps = NativeStackScreenProps<RootStackParamList, 'Recipes'>;
 
-export default function AboutScreen({ navigation }: AboutProps) {
+export default function RecipesScreen({ navigation }: RecipesProps) {
     return (
         <View style={styles.recipesScreenContainer}>
             <TouchableOpacity
-                style={sharedStyles.fullWidthButton}
                 onPress={() => navigation.navigate('Home')}>
-                <Text style={sharedStyles.fullWidthButtonText}>Go home</Text>
+                <Text>Go home</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-                style={sharedStyles.fullWidthButton}
                 onPress={() => navigation.goBack()}>
-                <Text style={sharedStyles.fullWidthButtonText}>Go back</Text>
+                <Text>Go back</Text>
             </TouchableOpacity>
         </View>
     );

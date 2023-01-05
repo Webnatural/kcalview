@@ -5,9 +5,10 @@ import {
   NativeStackHeaderProps,
 } from '@react-navigation/native-stack';
 
-import AboutScreen from '../../../components/screens/about';
-import CameraScreen from '../../../components/screens/camera';
-import HomeScreen from '../../../components/screens/home';
+import AboutScreen from '@components/screens/about';
+import CameraScreen from '@components/screens/camera';
+import RecipesScreen from '@components/screens/recipes';
+import HomeScreen from '@components/screens/home';
 import { RootStackParamList } from './index.types';
 
 function ThemedNavigationBar({ navigation, back }: NativeStackHeaderProps) {
@@ -39,6 +40,9 @@ export default function NavStack() {
           headerShown: false,
         }}
       />
+
+
+      <Stack.Screen name="Recipes" component={RecipesScreen} />
     </Stack.Navigator>
   );
 }
