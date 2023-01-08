@@ -1,27 +1,42 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+type recipeList = recipeListItem[]
+
+type recipeListItem = {
+    id: string,
+    title: string,
+    time: string;
+}
+
 interface InitialState {
-    recipeList: Array<string>
+    recipeList: recipeList
 };
 
 const initialState: InitialState = {
     recipeList: []
 };
 
-export const recipeSlice = createSlice({
+export const recipeReducer = createSlice({
     name: 'recipe',
-    // `createSlice` will infer the state type from the `initialState` argument
     initialState,
     reducers: {
+        clearRecipes: (state) => {
+            state.recipeList = []
+        },
         addRecipe: (state, action) => {
             state.recipeList.push(action.payload)
         },
-        addTimestamp: (state) => {
-            state.recipeList.push(Date.now().toString())
-        }
+        removeRecipe: (state, action) => {
+            return {
+                ...state,
+                recipeList: state.recipeList.filter(
+                    item => item.id !== action.payload.id
+                )
+            };
+        },
     }
 });
 
-export const { addRecipe, addTimestamp } = recipeSlice.actions;
+export const { addRecipe, removeRecipe, clearRecipes } = recipeReducer.actions;
 
-export default recipeSlice.reducer;
+export default recipeReducer.reducer;
