@@ -20,8 +20,7 @@ export default function ImagePreview({
   return (
     <View style={styles.imagePreviewContainer}>
       <>
-        <Image source={{ uri: 'file://' + previewImgPath }} style={[styles.image]} />
-        {console.log(textFromImage)}
+        <Image source={{ uri: previewImgPath.assets[0].uri }} style={[styles.image]} />
 
         {!textFromImage ? (
           <ActivityIndicator />
