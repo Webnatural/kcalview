@@ -18,8 +18,6 @@ module.exports = {
           '@screens/*': './src/components/screens/*',
           '@shared': './src/components/shared',
           '@shared/*': './src/components/shared/*',
-          '@slices': './src/store/slices',
-          '@slices/*': './src/store/slices/*',
           '@store': './src/store',
           '@store/*': './src/store/*',
         },

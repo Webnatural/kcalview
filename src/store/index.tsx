@@ -3,7 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import { recipeApiService } from '@store/api';
 import { loggerMiddlware, testMiddlware } from '@store/middleware';
-import recipeReducer from '@slices/recipes';
+import recipeReducer from '@/src/store/features/recipes';
 
 const reducers = combineReducers({
     recipeReducer,

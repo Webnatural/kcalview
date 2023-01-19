@@ -4,7 +4,7 @@ import { List } from 'react-native-paper';
 import uuid from 'react-uuid';
 
 import { useAppSelector, useAppDispatch } from '@store/hooks';
-import { addRecipe, removeRecipe, clearRecipes } from '@slices/recipes';
+import { addRecipe, removeRecipe, clearRecipes } from '@/src/store/features/recipes';
 import { useGetRecipeListQuery } from '@store/api'
 
 

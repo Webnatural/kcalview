@@ -16,7 +16,7 @@ const initialState: InitialState = {
     recipeList: []
 };
 
-export const recipeReducer = createSlice({
+export const RecipeReducer = createSlice({
     name: 'recipe',
     initialState,
     reducers: {
@@ -37,6 +37,6 @@ export const recipeReducer = createSlice({
     }
 });
 
-export const { addRecipe, removeRecipe, clearRecipes } = recipeReducer.actions;
+export const { addRecipe, removeRecipe, clearRecipes } = RecipeReducer.actions;
 
-export default recipeReducer.reducer;
+export default RecipeReducer.reducer;
