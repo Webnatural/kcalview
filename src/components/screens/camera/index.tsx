@@ -7,7 +7,6 @@ import TextRecognition, {
 
 import BottomButtons from './components/BottomButtons';
 import ImagePreview from './components/ImagePreview';
-import { styles } from './index.styles';
 
 export default function CameraScreen() {
     const [previewImgPath, setPreviewImgPath] = useState<string | null>(null);
