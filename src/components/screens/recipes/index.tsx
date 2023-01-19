@@ -4,6 +4,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { RootStackParamList } from '@navstack/root/index.types';
 import RecipesList from './components/list';
+import { Button } from 'react-native-paper';
 import { styles } from './index.styles';
 
 type RecipesProps = NativeStackScreenProps<RootStackParamList, 'Recipes'>;
@@ -11,16 +12,21 @@ type RecipesProps = NativeStackScreenProps<RootStackParamList, 'Recipes'>;
 export default function RecipesScreen({ navigation }: RecipesProps) {
     return (
         <View style={styles.recipesScreenContainer}>
-            <RecipesList />
-            <TouchableOpacity
+            <Button
+                icon="arrow-left"
+                mode="contained"
                 onPress={() => navigation.navigate('Home')}>
-                <Text>Go home</Text>
-            </TouchableOpacity>
+                Camera
+            </Button>
 
-            <TouchableOpacity
+            <Button
+                icon="arrow-left"
+                mode="contained"
                 onPress={() => navigation.goBack()}>
-                <Text>Go back</Text>
-            </TouchableOpacity>
+                Camera
+            </Button>
+
+            <RecipesList />
         </View>
     );
 }

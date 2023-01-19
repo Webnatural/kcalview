@@ -38,7 +38,7 @@ export default function RecipesList() {
             </TouchableOpacity>
 
             <List.Section>
-                <List.Item title={title} />
+                <List.Item title={title} description="Item description" />
             </List.Section>
 
             <TextInput value={title} style={[{ backgroundColor: 'white' }]} onChangeText={(title) => {
@@ -68,7 +68,7 @@ export default function RecipesList() {
                                 dispatch(removeRecipe(data))
 
                             }}>
-                                <List.Item title={data.title} right={() => <List.Icon icon="close" />}></List.Item>
+                                <List.Item title={data.title} description="Item description" right={() => <List.Icon icon="close" />}></List.Item>
                             </TouchableOpacity>
                         )
                     })
