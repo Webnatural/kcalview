@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import * as ImagePicker from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-picker';
 
 import TextRecognition, {
     TextRecognitionResult,

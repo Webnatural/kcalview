@@ -6,7 +6,6 @@ import { styles } from './index.styles';
 
 type BottomButtonProps = {
   takePic: () => Promise<void>;
-  previewImgPath: string | null;
 };
 
 export default function BottomButtons({
