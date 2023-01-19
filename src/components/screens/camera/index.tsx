@@ -1,8 +1,4 @@
 import React, { useState } from 'react';
-import {
-    Text,
-    View,
-} from 'react-native';
 import * as ImagePicker from 'react-native-image-picker';
 
 import TextRecognition, {
@@ -44,7 +40,6 @@ export default function CameraScreen() {
                     previewImgPath={previewImgPath}
                     setPreviewImgPath={setPreviewImgPath}
                     textFromImage={textFromImage}
-
                 />
             )}
 
