@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ImagePicker from 'react-native-image-picker';
+import { launchCamera } from 'react-native-image-picker';
 
 import TextRecognition, {
     TextRecognitionResult,
@@ -10,15 +10,21 @@ import ImagePreview from './components/ImagePreview';
 
 export default function CameraScreen() {
     const [previewImgPath, setPreviewImgPath] = useState<string | null>(null);
-    const [textFromImage, setTextFromImage] = useState<TextRecognitionResult | null>(null);
+    const [textFromImage, setTextFromImage] =
+        useState<TextRecognitionResult | null>(null);
 
     const takePic = async () => {
-        const result = await ImagePicker.launchCamera('capture', setPreviewImgPath);
+        const result = await launchCamera('capture', setPreviewImgPath);
+
+        setTextFromImage(null);
+
         try {
-            if (!result) {
-                return
-            };
-            const data = await TextRecognition.recognize(result.assets[0].uri);
+            if (!result?.assets) {
+                return;
+            }
+
+            const { uri } = result.assets[0];
+            const data = await TextRecognition.recognize(uri);
 
             setTextFromImage(data);
         } catch (error) {
@@ -30,18 +36,14 @@ export default function CameraScreen() {
     return (
         <>
             {!previewImgPath ? (
-
-                <BottomButtons takePic={takePic} previewImgPath={previewImgPath} />
-
+                <BottomButtons takePic={takePic} />
             ) : (
-
                 <ImagePreview
                     previewImgPath={previewImgPath}
                     setPreviewImgPath={setPreviewImgPath}
                     textFromImage={textFromImage}
                 />
             )}
-
         </>
-    )
+    );
 }

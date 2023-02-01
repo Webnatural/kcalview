@@ -6,8 +6,6 @@ module.exports = {
       'module-resolver',
       {
         alias: {
-          '@': './',
-          '@/*': './*',
           '@kcalview': './',
           '@kcalview/*': './*',
           '@components': './src/components',
@@ -16,10 +14,12 @@ module.exports = {
           '@navstack/*': './src/components/navstack/*',
           '@screens': './src/components/screens',
           '@screens/*': './src/components/screens/*',
-          '@shared': './src/components/shared',
-          '@shared/*': './src/components/shared/*',
+          '@shared': './src/shared',
+          '@shared/*': './src/shared/*',
           '@store': './src/store',
           '@store/*': './src/store/*',
+          '@db': './src/database',
+          '@db/*': './src/database/*',
         },
       },
     ],

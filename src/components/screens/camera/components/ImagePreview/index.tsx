@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, Image, ActivityIndicator } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { TextRecognitionResult } from '@react-native-ml-kit/text-recognition';
@@ -15,7 +15,7 @@ type ImagePreviewProps = {
 export default function ImagePreview({
   previewImgPath,
   setPreviewImgPath,
-  textFromImage
+  textFromImage,
 }: ImagePreviewProps) {
   return (
     <View style={styles.imagePreviewContainer}>
