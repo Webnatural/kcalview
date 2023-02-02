@@ -23,7 +23,6 @@ export default function FormAddItem({
 
         try {
             const db = await getDBConnection();
-
             const rowId = await saveRecipeItems(db, [{ title: newRecipe, id: 0 }]);
             const newRecipes = [...recipes, {
                 title: newRecipe,

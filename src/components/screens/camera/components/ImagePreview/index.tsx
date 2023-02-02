@@ -19,23 +19,21 @@ export default function ImagePreview({
 }: ImagePreviewProps) {
   return (
     <View style={styles.imagePreviewContainer}>
-      <>
-        <Image source={{ uri: previewImgPath.assets[0].uri }} style={[styles.image]} />
+      <Image source={{ uri: previewImgPath.assets[0].uri }} style={[styles.image]} />
 
-        {!textFromImage ? (
-          <ActivityIndicator />
-        ) : (
-          <>
-            <TextMap text={textFromImage.text} blocks={textFromImage.blocks} />
-            <IconButton
-              style={styles.closeButton}
-              mode="contained"
-              icon="close"
-              onPress={() => setPreviewImgPath(null)}
-            />
-          </>
-        )}
-      </>
+      {!textFromImage ? (
+        <ActivityIndicator />
+      ) : (
+        <>
+          <TextMap text={textFromImage.text} blocks={textFromImage.blocks} />
+          <IconButton
+            style={styles.closeButton}
+            mode="contained"
+            icon="close"
+            onPress={() => setPreviewImgPath(null)}
+          />
+        </>
+      )}
     </View>
   );
 }
