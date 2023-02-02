@@ -1,7 +1,6 @@
 import React from 'react';
 import uuid from 'react-uuid';
 import { TouchableOpacity, Text } from 'react-native';
-// import Clipboard from '@react-native-clipboard/clipboard';
 import { TextRecognitionResult } from '@react-native-ml-kit/text-recognition';
 
 import { styles } from './index.styles';

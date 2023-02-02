@@ -2,18 +2,17 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@navstack/root/index.types';
-import { Button, TextInput } from 'react-native-paper';
 
-import { RecipeItemComponent } from '@screens/recipes/components/item';
-import { Recipe } from '@screens/recipes/index.types'
-import { getDBConnection, getRecipeItems, saveRecipeItems, createTable, deleteRecipeItem } from '@db';
+import { RecipeItemComponent } from '@screens/recipes/components/Item';
+import FormAddItem from '@screens/recipes/components/FormAddItem';
+import { Recipe } from '@screens/recipes/index.types';
+import { getDBConnection, getRecipeItems, createTable, deleteRecipeItem } from '@db';
 
 type RecipesProps = NativeStackScreenProps<RootStackParamList, 'Recipes'>;
 
 export default function RecipesScreen({ navigation }: RecipesProps) {
 
     const [recipes, setRecipes] = useState<Recipe[]>([]);
-    const [newRecipe, setNewRecipe] = useState('');
 
     const loadDataCallback = useCallback(async () => {
         try {
@@ -28,25 +27,6 @@ export default function RecipesScreen({ navigation }: RecipesProps) {
             console.error(error);
         }
     }, []);
-
-    const addRecipe = async () => {
-        if (!newRecipe.trim()) return;
-
-        try {
-
-            const db = await getDBConnection();
-            const newRecipes = [...recipes, {
-                title: newRecipe
-            }];
-
-            setRecipes(newRecipes);
-            await saveRecipeItems(db, [{ title: newRecipe }]);
-
-            setNewRecipe('');
-        } catch (error) {
-            console.error(error);
-        }
-    };
 
     const deleteItem = async (id: number) => {
         try {
@@ -72,17 +52,7 @@ export default function RecipesScreen({ navigation }: RecipesProps) {
             {recipes.map((recipe) => (
                 <RecipeItemComponent key={recipe.id} recipe={recipe} deleteItem={deleteItem} />
             ))}
-
-            <TextInput
-                value={newRecipe}
-                onChangeText={text => setNewRecipe(text)}
-            />
-
-            <Button
-                onPress={addRecipe}
-                accessibilityLabel="Add Recipe">
-                Add Recipe
-            </Button>
+            <FormAddItem recipes={recipes} setRecipes={setRecipes} />
         </View>
     );
 };
