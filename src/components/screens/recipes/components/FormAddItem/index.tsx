@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 
 import { Recipe } from '@screens/recipes/index.types'
-import { getDBConnection, saveRecipeItems } from '@db';
+import { getDBConnection, saveRecipeItems } from '@kcalview/src/database/recipes';
 
 type FormAddItemProps = {
     recipes: Recipe[];
@@ -23,13 +23,14 @@ export default function FormAddItem({
 
         try {
             const db = await getDBConnection();
+
+            const rowId = await saveRecipeItems(db, [{ title: newRecipe, id: 0 }]);
             const newRecipes = [...recipes, {
-                title: newRecipe
+                title: newRecipe,
+                id: rowId
             }];
 
             setRecipes(newRecipes);
-            await saveRecipeItems(db, [{ title: newRecipe }]);
-
             setNewRecipe('');
         } catch (error) {
             console.error(error);
@@ -41,6 +42,13 @@ export default function FormAddItem({
             <TextInput
                 value={newRecipe}
                 onChangeText={text => setNewRecipe(text)}
+            />
+
+            <TextInput
+                multiline
+                numberOfLines={4}
+            // value={setDescription}
+            // onChangeText={(Description) => { setDescription(Description) }}
             />
 
             <Button

@@ -52,18 +52,30 @@ export const saveRecipeItems = async (
     `INSERT OR REPLACE INTO ${tableName}(title, description, created_at) values` +
     recipeItems.map(i => `('${i.title}', '${i.title}', '0')`).join(',');
 
-  return db.executeSql(insertQuery);
+  return db
+    .executeSql(insertQuery)
+    .then(res => {
+      if (Array.isArray(res)) {
+        const first = res[0];
+        if (first && first.insertId && first.insertId > 0) {
+          if (first.insertId > 0) {
+            return first.insertId;
+          }
+        }
+      }
+    })
+    .catch(err => {
+      console.log('err', err);
+      /** @todo cleanup... */
+    });
 };
 
 export const deleteRecipeItem = async (db: SQLiteDatabase, id: number) => {
   const deleteQuery = `DELETE from ${tableName} where id = ${id}`;
-  console.log(deleteQuery);
-  console.log(id);
   await db.executeSql(deleteQuery);
 };
 
 export const deleteTable = async (db: SQLiteDatabase) => {
   const query = `drop table ${tableName}`;
-
   await db.executeSql(query);
 };

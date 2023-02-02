@@ -7,10 +7,10 @@ type ItemProps = {
     deleteItem: Function
 }
 
-export function RecipeItemComponent({ recipe: { id, title, description }, deleteItem }: ItemProps) {
+export function RecipeItems({ recipe: { id, title, description }, deleteItem }: ItemProps) {
     return (
         <List.Section>
-            <List.Item title={title} description={description} />
+            <List.Item key={id} title={title} description={description} />
             <IconButton
                 icon="delete"
                 onPress={() => deleteItem(id)}
