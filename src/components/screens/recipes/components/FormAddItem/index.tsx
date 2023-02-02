@@ -19,7 +19,7 @@ export default function FormAddItem({
 
     const addRecipe = async () => {
 
-        if (!newRecipe.trim()) return;
+        if (!newRecipe.trim().length) return;
 
         try {
             const db = await getDBConnection();
