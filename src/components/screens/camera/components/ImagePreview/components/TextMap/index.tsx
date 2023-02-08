@@ -6,9 +6,8 @@ import { TextRecognitionResult } from '@react-native-ml-kit/text-recognition';
 import { styles } from './index.styles';
 
 export default function TextMap({ text, blocks }: TextRecognitionResult) {
-  blocks.map(block =>
-    block.lines.map(line => line.elements.map(el => console.log(el.text))),
-  );
+
+  console.log(JSON.stringify(blocks))
 
   return (
     <TouchableOpacity

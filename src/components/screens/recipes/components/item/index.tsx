@@ -4,7 +4,7 @@ import { Recipe } from '@screens/recipes/index.types'
 
 type ItemProps = {
     recipe: Recipe,
-    deleteItem: Function
+    deleteItem: (value: number) => void;
 }
 
 export function RecipeItems({ recipe: { id, title, description }, deleteItem }: ItemProps) {

@@ -14,11 +14,11 @@ export default function CameraScreen() {
         useState<TextRecognitionResult | null>(null);
 
     const takePic = async () => {
-        const result = await launchCamera('capture', setPreviewImgPath);
-
-        setTextFromImage(null);
-
         try {
+            const result = await launchCamera('capture', setPreviewImgPath);
+
+            setTextFromImage(null);
+
             if (!result?.assets) {
                 return;
             }

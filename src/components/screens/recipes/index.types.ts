@@ -3,7 +3,7 @@ export type Recipes = {
 };
 
 export type Recipe = {
-  id: number;
+  id: number | undefined;
   title: string;
   description?: string;
   created_at?: Date;

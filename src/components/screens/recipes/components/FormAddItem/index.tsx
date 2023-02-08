@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 
 import { Recipe } from '@screens/recipes/index.types'
-import { getDBConnection, saveRecipeItems } from '@kcalview/src/database/recipes';
+import { getDBConnection, saveRecipeItems } from '@db/recipes';
 
 type FormAddItemProps = {
     recipes: Recipe[];
@@ -15,39 +15,41 @@ export default function FormAddItem({
     setRecipes,
 }: FormAddItemProps) {
 
-    const [newRecipe, setNewRecipe] = useState('');
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
 
     const addRecipe = async () => {
 
-        if (!newRecipe.trim().length) return;
+        if (!title.trim().length) return;
 
         try {
             const db = await getDBConnection();
-            const rowId = await saveRecipeItems(db, [{ title: newRecipe, id: 0 }]);
-            const newRecipes = [...recipes, {
-                title: newRecipe,
-                id: rowId
-            }];
+            try {
+                const id = await saveRecipeItems(db, [{ id: 0, title, description }], 'recipes');
+                setRecipes([...recipes, { id, title, description }]);
+            } catch (e) {
+                throw new Error('Could not save items')
+            }
 
-            setRecipes(newRecipes);
-            setNewRecipe('');
-        } catch (error) {
-            console.error(error);
+        } catch (e) {
+            throw new Error('Could not connect to database while adding item')
         }
     };
 
     return (
         <View>
             <TextInput
-                value={newRecipe}
-                onChangeText={text => setNewRecipe(text)}
+                value={title}
+                onChangeText={text => setTitle(text)}
+                accessibilityLabel="Add Recipe Title"
             />
 
             <TextInput
                 multiline
                 numberOfLines={4}
-            // value={setDescription}
-            // onChangeText={(Description) => { setDescription(Description) }}
+                value={description}
+                onChangeText={text => setDescription(text)}
+                accessibilityLabel="Add Recipe Description"
             />
 
             <Button

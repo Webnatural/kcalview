@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@navstack/root/index.types';
 
@@ -13,27 +13,23 @@ type RecipesProps = NativeStackScreenProps<RootStackParamList, 'Recipes'>;
 export default function RecipesScreen({ navigation }: RecipesProps) {
 
     const [recipes, setRecipes] = useState<Recipe[]>([]);
+    const tableName = 'recipes';
 
     const deleteItem = async (id: number) => {
         try {
             const db = await getDBConnection();
-            const foundIndex = recipes.findIndex(element => element.id === id);
-
-            await deleteRecipeItem(db, id);
-
-            recipes.splice(foundIndex, 1)
-
-            setRecipes(recipes.slice(0));
+            await deleteRecipeItem(db, id, tableName);
+            setRecipes(prevRecipes => prevRecipes.filter(r => r.id !== id))
         } catch (error) {
             console.error(error);
         }
     };
 
-    const loadDataCallback = useCallback(async () => {
+    const loadData = useCallback(async () => {
         try {
             const db = await getDBConnection();
-            await createTable(db);
-            const storedRecipeItems = await getRecipeItems(db);
+            await createTable(db, tableName);
+            const storedRecipeItems = await getRecipeItems(db, tableName);
 
             if (storedRecipeItems.length) {
                 setRecipes(storedRecipeItems);
@@ -44,15 +40,17 @@ export default function RecipesScreen({ navigation }: RecipesProps) {
     }, []);
 
     useEffect(() => {
-        loadDataCallback();
-    }, [loadDataCallback]);
+        loadData();
+    }, [loadData]);
 
     return (
         <View>
-            {recipes.map((recipe) => (
-                <RecipeItems key={recipe.id} recipe={recipe} deleteItem={deleteItem} />
-            ))}
-            <FormAddItem recipes={recipes} setRecipes={setRecipes} />
+            <ScrollView>
+                {recipes.map((recipe) => (
+                    <RecipeItems key={recipe.id} recipe={recipe} deleteItem={deleteItem} />
+                ))}
+                <FormAddItem recipes={recipes} setRecipes={setRecipes} />
+            </ScrollView>
         </View>
     );
 };
