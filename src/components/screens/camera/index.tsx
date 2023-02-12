@@ -29,7 +29,7 @@ export default function CameraScreen() {
             setTextFromImage(data);
         } catch (error) {
             /** @todo: Weryfikacja błędów */
-            console.log(error);
+            console.error(error);
             return;
         }
     };

@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
-import { Button, TextInput } from 'react-native-paper';
+import { useForm, useFieldArray, Controller, useWatch, FieldValues } from "react-hook-form";
+
+import { Text, View } from 'react-native';
+import { Button, TextInput, IconButton } from 'react-native-paper';
 
 import { Recipe } from '@screens/recipes/index.types'
+import { styles } from './index.styles';
 import { getDBConnection, saveRecipeItems } from '@db/recipes';
 
 type FormAddItemProps = {
@@ -15,48 +18,138 @@ export default function FormAddItem({
     setRecipes,
 }: FormAddItemProps) {
 
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
+    const { register, control, getValues, reset, formState: { errors } } = useForm({});
+    const {
+        fields,
+        append,
+        remove,
+    } = useFieldArray({
+        control,
+        name: "ingredients"
+    });
 
-    const addRecipe = async () => {
+    const onSubmit = () => {
+        addRecipe(getValues());
+    };
 
-        if (!title.trim().length) return;
+    const addRecipe = async (values: FieldValues) => {
+        if (!values.title.trim().length) return;
+
+        const { title, description, ingredients } = values;
+        const ingredientsJSON = JSON.stringify(ingredients);
 
         try {
             const db = await getDBConnection();
+
             try {
-                const id = await saveRecipeItems(db, [{ id: 0, title, description }], 'recipes');
-                setRecipes([...recipes, { id, title, description }]);
-            } catch (e) {
-                throw new Error('Could not save items')
+                const id = await saveRecipeItems(db, [{ id: 0, title, description, ingredients: ingredientsJSON }], 'recipes');
+                setRecipes([...recipes, { id, title, description, ingredients }]);
+            } catch (error) {
+                console.error(error)
             }
 
-        } catch (e) {
-            throw new Error('Could not connect to database while adding item')
+        } catch (error) {
+            console.error(error)
         }
-    };
+    }
+
 
     return (
+
         <View>
-            <TextInput
-                value={title}
-                onChangeText={text => setTitle(text)}
-                accessibilityLabel="Add Recipe Title"
+            <Controller
+                render={({ field: { onChange, value } }) => <TextInput
+                    onChangeText={onChange}
+                    value={value}
+                    label="Title"
+                    style={styles.input}
+                    {...register(`title`, { required: true })}
+                    accessibilityLabel="Add Recipe Title"
+                />}
+                control={control}
+                name={`title`}
             />
 
-            <TextInput
-                multiline
-                numberOfLines={4}
-                value={description}
-                onChangeText={text => setDescription(text)}
-                accessibilityLabel="Add Recipe Description"
+            <Controller
+                render={({ field: { onChange, value } }) => <TextInput
+                    onChangeText={onChange}
+                    value={value}
+                    style={styles.input}
+                    multiline
+                    numberOfLines={4}
+                    label="Description"
+                    {...register(`description`)}
+                    accessibilityLabel="Add Recipe Description"
+                />}
+                control={control}
+                name={`description`}
             />
 
+            {fields.map((item, index) => {
+                return (
+                    <View key={item.id} style={styles.inlineInputContainer}>
+                        <Controller
+                            render={({ field: { onChange, value } }) => <TextInput style={styles.input}
+                                onChangeText={onChange}
+                                value={value}
+                                label="Ingredient"
+                                {...register(`ingredients.${index}.ingredientName`, { required: true })}
+                            />}
+                            control={control}
+                            name={`ingredients.${index}.ingredientName`}
+                        />
+
+                        <Controller
+                            render={({ field: { onChange, value } }) => <TextInput
+                                style={[styles.input, styles.flex1, styles.massInputWidth, styles.textAlignRight]}
+                                onChangeText={onChange}
+                                value={value}
+                                keyboardType="numeric"
+                                maxLength={4}
+                            />}
+                            name={`ingredients.${index}.mass`}
+                            control={control}
+                        /><Text>g</Text>
+
+                        <Button
+                            icon="minus"
+                            mode="outlined"
+                            onPress={() => remove(index)}>
+                            Delete
+                        </Button>
+                    </View>
+                );
+            })}
+            <View>
+                <Button
+                    icon="plus"
+                    mode="outlined"
+                    style={[styles.button, styles.alignSelfEnd]}
+                    onPress={() => {
+                        append({ ingredientName: "", mass: 0 });
+                    }}
+                >Add ingredient</Button>
+            </View>
             <Button
-                onPress={addRecipe}
+                onPress={onSubmit}
+                icon="receipt"
+                mode="contained"
                 accessibilityLabel="Add Recipe">
                 Add Recipe
             </Button>
-        </View>
+            <View style={styles.button}>
+                <Button
+                    icon="close"
+                    mode="outlined"
+                    onPress={() => {
+                        reset({
+                            ingredientName: 'Hempseed',
+                            mass: 0
+                        })
+                    }}
+                >Reset</Button>
+            </View>
+        </View >
     );
 };
+

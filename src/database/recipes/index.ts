@@ -17,6 +17,7 @@ export const createTable = async (db: SQLiteDatabase, tableName: string) => {
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "title" VARCHAR(200) NOT NULL,
     "description" TEXT NOT NULL,
+    "ingredients" TEXT NOT NULL,
     "created_at" TEXT NOT NULL
     );`;
   try {
@@ -34,7 +35,7 @@ export const getRecipeItems = async (
   try {
     const recipeItems: Recipe[] = [];
     const response = await db.executeSql(
-      `SELECT id,title, description, created_at FROM ${tableName}`,
+      `SELECT id,title, description, ingredients, created_at FROM ${tableName}`,
     );
 
     response.forEach(result => {
@@ -54,13 +55,15 @@ export const saveRecipeItems = async (
   tableName: string,
 ) => {
   const query =
-    `INSERT OR REPLACE INTO ${tableName}(title, description, created_at) values` +
-    recipeItems.map(i => `('${i.title}', '${i.description}', '0')`).join(',');
+    `INSERT OR REPLACE INTO ${tableName}(title, description, ingredients, created_at) values` +
+    recipeItems
+      .map(i => `('${i.title}', '${i.description}', '${i.ingredients}', '0')`)
+      .join(',');
 
   try {
     const response = await db.executeSql(query);
     const first = response[0];
-
+    console.log(response);
     if (!Array.isArray(response)) {
       return;
     }
@@ -69,7 +72,7 @@ export const saveRecipeItems = async (
       return first.insertId;
     }
   } catch (error) {
-    throw Error(`Failed to put item(s): ${JSON.stringify(recipeItems)}`);
+    console.error(error);
   }
 };
 
@@ -84,7 +87,8 @@ export const deleteRecipeItem = async (
     const response = await db.executeSql(query);
     return response;
   } catch (error) {
-    throw Error(`Failed to delete item: ${id}`);
+    console.error(error);
+    // throw Error(`Failed to delete item: ${id}`);
   }
 };
 

@@ -1,0 +1,62 @@
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { Button, TextInput } from 'react-native-paper';
+
+import { Recipe } from '@screens/recipes/index.types'
+import { getDBConnection, saveRecipeItems } from '@db/recipes';
+
+type FormAddItemProps = {
+    recipes: Recipe[];
+    setRecipes: (value: Recipe[]) => void;
+};
+
+export default function FormAddItem({
+    recipes,
+    setRecipes,
+}: FormAddItemProps) {
+
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+
+    const addRecipe = async () => {
+
+        if (!title.trim().length) return;
+
+        try {
+            const db = await getDBConnection();
+            try {
+                const id = await saveRecipeItems(db, [{ id: 0, title, description }], 'recipes');
+                setRecipes([...recipes, { id, title, description }]);
+            } catch (error) {
+                throw new Error('Could not save items')
+            }
+
+        } catch (error) {
+            throw new Error('Could not connect to database while adding item')
+        }
+    };
+
+    return (
+        <View>
+            <TextInput
+                value={title}
+                onChangeText={text => setTitle(text)}
+                accessibilityLabel="Add Recipe Title"
+            />
+
+            <TextInput
+                multiline
+                numberOfLines={4}
+                value={description}
+                onChangeText={text => setDescription(text)}
+                accessibilityLabel="Add Recipe Description"
+            />
+
+            <Button
+                onPress={addRecipe}
+                accessibilityLabel="Add Recipe">
+                Add Recipe
+            </Button>
+        </View>
+    );
+};

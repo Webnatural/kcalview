@@ -28,7 +28,6 @@ export default function RecipesScreen({ navigation }: RecipesProps) {
     const loadData = useCallback(async () => {
         try {
             const db = await getDBConnection();
-            await createTable(db, tableName);
             const storedRecipeItems = await getRecipeItems(db, tableName);
 
             if (storedRecipeItems.length) {

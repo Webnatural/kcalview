@@ -7,7 +7,7 @@ type ItemProps = {
     deleteItem: (value: number) => void;
 }
 
-export function RecipeItems({ recipe: { id, title, description }, deleteItem }: ItemProps) {
+export function RecipeItems({ recipe: { id = 0, title, description }, deleteItem }: ItemProps) {
     return (
         <List.Section>
             <List.Item key={id} title={title} description={description} />
