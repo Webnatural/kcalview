@@ -6,18 +6,18 @@ import { loggerMiddlware, testMiddlware } from '@store/middleware';
 import { recipeReducer } from '@store/features/recipes';
 
 const reducers = combineReducers({
-    recipes: recipeReducer,
-    [recipeApiService.reducerPath]: recipeApiService.reducer,
+  recipes: recipeReducer,
+  [recipeApiService.reducerPath]: recipeApiService.reducer,
 });
 
 const store = configureStore({
-    reducer: reducers,
-    middleware: getCurrentMiddlewares => {
-        return getCurrentMiddlewares()
-            .concat(loggerMiddlware)
-            .concat(testMiddlware)
-            .concat(recipeApiService.middleware);
-    },
+  reducer: reducers,
+  middleware: getCurrentMiddlewares => {
+    return getCurrentMiddlewares()
+      .concat(loggerMiddlware)
+      .concat(testMiddlware)
+      .concat(recipeApiService.middleware);
+  },
 });
 
 export type RootState = ReturnType<typeof reducers>;

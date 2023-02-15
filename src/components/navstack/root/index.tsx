@@ -41,7 +41,6 @@ export default function NavStack() {
         }}
       />
 
-
       <Stack.Screen name="Recipes" component={RecipesScreen} />
     </Stack.Navigator>
   );
