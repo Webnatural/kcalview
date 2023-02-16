@@ -8,9 +8,8 @@ import FormAddItem from '@screens/recipes/components/FormAddItem';
 import { Recipe } from '@screens/recipes/index.types';
 import { getDBConnection, getRecipeItems, deleteRecipeItem } from '@db/recipes';
 
-type RecipesProps = NativeStackScreenProps<RootStackParamList, 'Recipes'>;
 
-export default function RecipesScreen({ navigation }: RecipesProps) {
+export default function RecipesScreen() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const tableName = 'recipes';
 
