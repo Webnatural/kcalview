@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     background: 'transparent',
   },
-  closeButton: {
+  addButton: {
     position: 'absolute',
     top: 0,
     end: 0,

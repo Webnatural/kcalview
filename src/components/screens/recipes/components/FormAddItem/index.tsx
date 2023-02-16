@@ -61,8 +61,6 @@ export default function FormAddItem({ recipes, setRecipes }: FormAddItemProps) {
     }
   };
 
-  console.log(errors);
-
   return (
     <View>
       <Controller

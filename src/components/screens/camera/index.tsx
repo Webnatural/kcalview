@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { launchCamera } from 'react-native-image-picker';
+import { CameraOptions, launchCamera } from 'react-native-image-picker';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@navstack/root/index.types';
 
@@ -18,23 +18,26 @@ export default function CameraScreen({ navigation }: CameraProps) {
     useState<TextRecognitionResult | null>(null);
 
   const takePic = async () => {
+    const options: CameraOptions = {
+      quality: 1,
+      mediaType: 'photo'
+    }
     try {
-      const result = await launchCamera('capture', setCallbackCamera);
+      const result = await launchCamera(options, setCallbackCamera);
 
-      if (!result) {
-        navigation.navigate('Home');
-        return;
-      }
-
-      if (result.didCancel) {
+      if (!result || result.didCancel) {
         navigation.navigate('Home');
         return;
       }
 
       setTextFromImage(null);
 
-      const { uri } = result.assets[0];
-      setPreviewImgPath(uri || null);
+      const uri = Array.isArray(result.assets) && result?.assets[0].uri;
+      if (!uri) {
+        return;
+      }
+
+      setPreviewImgPath(uri);
 
       const data = await TextRecognition.recognize(uri);
       setTextFromImage(data);
@@ -46,20 +49,6 @@ export default function CameraScreen({ navigation }: CameraProps) {
   };
 
   !callbackCamera && !previewImgPath && takePic();
-
-  if (callbackCamera) {
-    if (callbackCamera?.didCancel) {
-      // () => navigation.navigate('Home')
-    }
-  }
-
-  // if (previewImgPath) {
-  //   if (previewImgPath?.didCancel === true) {
-
-  //     () => navigation.navigate('Home')
-  //   }
-  // }
-  // }, [previewImgPath]);
 
   return (
     callbackCamera &&
