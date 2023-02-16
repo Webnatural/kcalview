@@ -33,13 +33,7 @@ export default function NavStack() {
 
       <Stack.Screen name="About" component={AboutScreen} />
 
-      <Stack.Screen
-        name="Camera"
-        component={CameraScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
+      <Stack.Screen name="Camera" component={CameraScreen} />
 
       <Stack.Screen name="Recipes" component={RecipesScreen} />
     </Stack.Navigator>

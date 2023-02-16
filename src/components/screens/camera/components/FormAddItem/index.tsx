@@ -18,10 +18,11 @@ export default function FormAddItem({ text }: FormAddItemProps) {
     register,
     control,
     getValues,
-    // formState: { errors },
+    formState: {},
   } = useForm({});
 
   const onSubmit = () => {
+    console.log(getValues());
     addRecipe(getValues());
   };
 
@@ -66,14 +67,15 @@ export default function FormAddItem({ text }: FormAddItemProps) {
           />
         )}
         control={control}
+        defaultValue={Date.now().toString()}
         name={'title'}
       />
 
       <Controller
-        render={({ field: { onChange } }) => (
+        render={({ field: { onChange, value } }) => (
           <TextInput
             onChangeText={onChange}
-            value={text}
+            value={value}
             style={styles.input}
             multiline
             label="Description"
@@ -82,6 +84,7 @@ export default function FormAddItem({ text }: FormAddItemProps) {
           />
         )}
         control={control}
+        defaultValue={text}
         name={'description'}
       />
       <Button

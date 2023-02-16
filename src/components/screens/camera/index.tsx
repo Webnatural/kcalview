@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import { CameraOptions, launchCamera } from 'react-native-image-picker';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '@navstack/root/index.types';
 
+import { RootStackParamList } from '@navstack/root/index.types';
 import TextRecognition, {
   TextRecognitionResult,
 } from '@react-native-ml-kit/text-recognition';
-
 import ImagePreview from './components/ImagePreview';
 
 type CameraProps = NativeStackScreenProps<RootStackParamList, 'Camera'>;
 
 export default function CameraScreen({ navigation }: CameraProps) {
   const [previewImgPath, setPreviewImgPath] = useState<string | null>(null);
-  const [callbackCamera, setCallbackCamera] = useState(null);
+  const [callbackCamera, setCallbackCamera] = useState({});
   const [textFromImage, setTextFromImage] =
     useState<TextRecognitionResult | null>(null);
 
@@ -42,16 +41,15 @@ export default function CameraScreen({ navigation }: CameraProps) {
       const data = await TextRecognition.recognize(uri);
       setTextFromImage(data);
     } catch (error) {
-      /** @todo: Weryfikacja błędów */
       console.error(error);
       return;
     }
   };
 
-  !callbackCamera && !previewImgPath && takePic();
+  Object.keys(callbackCamera).length === 0 && !previewImgPath && takePic();
 
   return (
-    callbackCamera &&
+    Object.keys(callbackCamera).length > 0 &&
     previewImgPath && (
       <ImagePreview
         previewImgPath={previewImgPath}

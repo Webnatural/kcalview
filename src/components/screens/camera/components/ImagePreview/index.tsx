@@ -10,8 +10,6 @@ type ImagePreviewProps = {
   previewImgPath: string;
   setPreviewImgPath: (value: string | null) => void;
   textFromImage: TextRecognitionResult | null;
-  showAddRecipe: boolean;
-  setAddRecipe: (value: string | null) => void;
 };
 
 export default function ImagePreview({
