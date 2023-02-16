@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { CameraOptions, launchCamera } from 'react-native-image-picker';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@navstack/root/index.types';
@@ -20,8 +20,8 @@ export default function CameraScreen({ navigation }: CameraProps) {
   const takePic = async () => {
     const options: CameraOptions = {
       quality: 1,
-      mediaType: 'photo'
-    }
+      mediaType: 'photo',
+    };
     try {
       const result = await launchCamera(options, setCallbackCamera);
 

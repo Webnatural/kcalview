@@ -24,7 +24,7 @@ export default function FormAddItem({ recipes, setRecipes }: FormAddItemProps) {
     control,
     getValues,
     reset,
-    formState: { errors },
+    // formState: { errors },
   } = useForm({});
   const { fields, append, remove } = useFieldArray({
     control,
