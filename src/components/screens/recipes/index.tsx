@@ -36,9 +36,7 @@ export default function RecipesScreen() {
     }
   }, []);
 
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
+  loadData();
 
   return (
     <View>
