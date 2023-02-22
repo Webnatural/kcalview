@@ -3,9 +3,8 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   imagePreviewContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: 'transparent',
+    justifyContent: 'space-between',
+    background: 'white',
   },
   addButton: {
     position: 'absolute',

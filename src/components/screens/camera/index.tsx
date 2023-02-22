@@ -49,7 +49,6 @@ export default function CameraScreen({ navigation }: CameraProps) {
   Object.keys(callbackCamera).length === 0 && !previewImgPath && takePic();
 
   return (
-    Object.keys(callbackCamera).length > 0 &&
     previewImgPath && (
       <ImagePreview
         previewImgPath={previewImgPath}

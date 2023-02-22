@@ -54,19 +54,23 @@ export const saveRecipeItems = async (
   recipeItems: Recipe[],
   tableName: string,
 ) => {
-  const query =
-    `INSERT OR REPLACE INTO ${tableName}(title, description, ingredients, created_at) values` +
-    recipeItems
-      .map(i => `('${i.title}', '${i.description}', '${i.ingredients}', '0')`)
-      .join(',');
+  const query = `INSERT OR REPLACE INTO ${tableName}(title, description, ingredients, created_at) VALUES
+    ${Array('(?,?,?,?)'.repeat(recipeItems.length)).join(', ')}`;
+
+  const [recipesArr] = recipeItems.map(i => [
+    i.title,
+    i.description,
+    i.ingredients,
+    '0',
+  ]);
 
   try {
-    const response = await db.executeSql(query);
-    const first = response[0];
-    console.log(response);
+    const response = await db.executeSql(query, recipesArr);
     if (!Array.isArray(response)) {
       return;
     }
+
+    const [first] = response;
 
     if (first?.insertId > 0) {
       return first.insertId;
@@ -75,7 +79,6 @@ export const saveRecipeItems = async (
     console.error(error);
   }
 };
-
 export const deleteRecipeItem = async (
   db: SQLiteDatabase,
   id: number,
@@ -88,7 +91,6 @@ export const deleteRecipeItem = async (
     return response;
   } catch (error) {
     console.error(error);
-    // throw Error(`Failed to delete item: ${id}`);
   }
 };
 
