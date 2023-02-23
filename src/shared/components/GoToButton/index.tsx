@@ -15,6 +15,7 @@ export type GoToButtonProps = {
   icon: string;
   style?: StyleProp<ViewStyle>;
 };
+
 export type Navigate = {
   navigate: (value: string) => void;
 };

@@ -3,7 +3,7 @@ import { View, Image } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import { TextRecognitionResult } from '@react-native-ml-kit/text-recognition';
 
-import FormAddItem from '@screens/camera/components/FormAddRecipe';
+import FormAddRecipe from '@screens/camera/components/FormAddRecipe';
 import { styles } from './index.styles';
 
 type ImagePreviewProps = {
@@ -23,7 +23,7 @@ export default function ImagePreview({
       {!textFromImage ? (
         <ActivityIndicator animating={true} />
       ) : (
-        <FormAddItem text={textFromImage.text} blocks={textFromImage.blocks} />
+        <FormAddRecipe text={textFromImage.text} blocks={textFromImage.blocks} />
       )}
     </View>
   );

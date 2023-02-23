@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { View } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 import { CameraOptions, launchCamera } from 'react-native-image-picker';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { styles } from './index.styles';
 
 import { RootStackParamList } from '@navstack/root/index.types';
 import TextRecognition, {
@@ -48,13 +51,13 @@ export default function CameraScreen({ navigation }: CameraProps) {
 
   Object.keys(callbackCamera).length === 0 && !previewImgPath && takePic();
 
-  return (
-    previewImgPath && (
-      <ImagePreview
-        previewImgPath={previewImgPath}
-        setPreviewImgPath={setPreviewImgPath}
-        textFromImage={textFromImage}
-      />
-    )
-  );
+  return previewImgPath ? (
+    <ImagePreview
+      previewImgPath={previewImgPath}
+      setPreviewImgPath={setPreviewImgPath}
+      textFromImage={textFromImage}
+    />
+  ) : (
+    <View style={styles.imagePreviewContainer}><ActivityIndicator animating={true} /></View>
+  )
 }

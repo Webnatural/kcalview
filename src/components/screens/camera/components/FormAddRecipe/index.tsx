@@ -9,7 +9,7 @@ import { styles } from './index.styles';
 import { getDBConnection, saveRecipeItems } from '@db/recipes';
 import GoToButton from '@shared/components/GoToButton';
 
-export default function FormAddItem({ text, blocks }: TextRecognitionResult) {
+export default function FormAddRecipe({ text, blocks }: TextRecognitionResult) {
     const [showForm, setShowForm] = useState(true);
     const {
         register,
@@ -50,7 +50,7 @@ export default function FormAddItem({ text, blocks }: TextRecognitionResult) {
     };
 
     return showForm ? (
-        <View>
+        <View style={styles.container}>
             <Controller
                 render={({ field: { onChange, value } }) => (
                     <TextInput
