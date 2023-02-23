@@ -9,6 +9,7 @@ import AboutScreen from '@components/screens/about';
 import CameraScreen from '@components/screens/camera';
 import RecipesScreen from '@components/screens/recipes';
 import HomeScreen from '@components/screens/home';
+import Tabs from '@navstack/tabs';
 import { RootStackParamList } from './index.types';
 
 function ThemedNavigationBar({ navigation, back }: NativeStackHeaderProps) {
@@ -23,8 +24,8 @@ function ThemedNavigationBar({ navigation, back }: NativeStackHeaderProps) {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function NavStack() {
-  return (
-    <Stack.Navigator
+  return (<>
+    {/* <Stack.Navigator
       initialRouteName="Home"
       screenOptions={{
         header: props => <ThemedNavigationBar {...props} />,
@@ -36,6 +37,10 @@ export default function NavStack() {
       <Stack.Screen name="Camera" component={CameraScreen} />
 
       <Stack.Screen name="Recipes" component={RecipesScreen} />
-    </Stack.Navigator>
+
+    </Stack.Navigator> */}
+
+    <Tabs />
+  </>
   );
 }

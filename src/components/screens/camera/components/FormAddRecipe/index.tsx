@@ -70,7 +70,7 @@ export default function FormAddRecipe({ text, blocks }: TextRecognitionResult) {
                     />
                 )}
                 control={control}
-                defaultValue={blocks[0].text}
+                defaultValue={blocks[0]?.text || 'No text detected'}
                 name={'title'}
             />
 
@@ -78,7 +78,7 @@ export default function FormAddRecipe({ text, blocks }: TextRecognitionResult) {
                 render={({ field: { onChange, value } }) => (
                     <TextInput
                         onChangeText={onChange}
-                        value={value}
+                        value={value || 'No text detected'}
                         style={styles.input}
                         multiline
                         label="Description"
