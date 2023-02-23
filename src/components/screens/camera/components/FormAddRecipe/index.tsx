@@ -11,6 +11,8 @@ import GoToButton from '@shared/components/GoToButton';
 
 export default function FormAddRecipe({ text, blocks }: TextRecognitionResult) {
     const [showForm, setShowForm] = useState(true);
+    const [showSnackBar, setShowSnackBar] = useState(true);
+
     const {
         register,
         control,
@@ -21,6 +23,11 @@ export default function FormAddRecipe({ text, blocks }: TextRecognitionResult) {
     const onSubmit = () => {
         addRecipe(getValues());
     };
+
+
+    const onToggleSnackBar = () => setShowSnackBar(!showSnackBar);
+
+    const onDismissSnackBar = () => setShowSnackBar(false);
 
     const addRecipe = async (values: FieldValues) => {
         if (!values.title.trim().length) {
@@ -93,7 +100,10 @@ export default function FormAddRecipe({ text, blocks }: TextRecognitionResult) {
         </View>
     ) : (
         <View style={styles.container}>
-            <Snackbar visible={true} onDismiss={() => null}>
+            <Snackbar visible={showSnackBar} onDismiss={onDismissSnackBar} action={{
+                label: 'Dismiss',
+                onPress: () => onToggleSnackBar,
+            }}>
                 Recipe has been added
             </Snackbar>
             <GoToButton style={styles.button} screenName="Recipes" icon="receipt" mode="contained" />
