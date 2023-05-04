@@ -1,63 +1,158 @@
-import React, { useState } from 'react';
-import { View } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
-import { CameraOptions, launchCamera } from 'react-native-image-picker';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { styles } from './index.styles';
-
-import { RootStackParamList } from '@navstack/root/index.types';
+import React, { useCallback, useMemo, useEffect, useRef, useState } from 'react';
+import {
+  LayoutChangeEvent,
+  PixelRatio,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
+import { runOnJS } from 'react-native-reanimated';
+// import Clipboard from '@react-native-clipboard/clipboard';
+import {
+  Camera,
+  useCameraDevices,
+  useFrameProcessor,
+} from 'react-native-vision-camera';
 import TextRecognition, {
   TextRecognitionResult,
 } from '@react-native-ml-kit/text-recognition';
+import uuid from 'react-uuid';
+import { OCRFrame, scanOCR } from 'vision-camera-ocr';
+
+import BottomButtons from './components/BottomButtons';
 import ImagePreview from './components/ImagePreview';
+import { styles } from './index.styles';
 
-type CameraProps = NativeStackScreenProps<RootStackParamList, 'Camera'>;
-
-export default function CameraScreen({ navigation }: CameraProps) {
+export default function CameraScreen() {
+  const [hasPermission, setHasPermission] = useState(false);
+  const [ocr, setOcr] = useState<OCRFrame>();
+  const [pixelRatio, setPixelRatio] = useState(1);
   const [previewImgPath, setPreviewImgPath] = useState<string | null>(null);
-  const [callbackCamera, setCallbackCamera] = useState({});
-  const [textFromImage, setTextFromImage] =
-    useState<TextRecognitionResult | null>(null);
+  const [textFromImage, setTextFromImage] = useState<TextRecognitionResult | null>(null);
+
+  const cameraRef = useRef<Camera>(null);
+
+  const devices = useCameraDevices();
+  const device = useMemo(() => devices.back, [devices.back]);
+
+  const frameProcessor = useFrameProcessor(frame => {
+    'worklet';
+    runOnJS(setOcr)(scanOCR(frame));
+  }, []);
 
   const takePic = async () => {
-    const options: CameraOptions = {
-      quality: 1,
-      mediaType: 'photo',
-    };
     try {
-      const result = await launchCamera(options, setCallbackCamera);
+      if (!cameraRef.current) {
+        return
+      };
 
-      if (!result || result.didCancel) {
-        navigation.navigate('Home');
-        return;
-      }
+      const photo = await cameraRef.current.takeSnapshot({
+        quality: 0.95,
+        skipMetadata: true,
+      });
 
-      setTextFromImage(null);
+      setPreviewImgPath(photo.path);
 
-      const uri = Array.isArray(result.assets) && result?.assets[0].uri;
-      if (!uri) {
-        return;
-      }
+      const data = await TextRecognition.recognize('file://' + photo.path);
 
-      setPreviewImgPath(uri);
-
-      const data = await TextRecognition.recognize(uri);
       setTextFromImage(data);
+
     } catch (error) {
+      /** @todo: Weryfikacja błędów */
       console.error(error);
       return;
     }
   };
 
-  Object.keys(callbackCamera).length === 0 && !previewImgPath && takePic();
+  const renderOverlay = useCallback(() => {
 
-  return previewImgPath ? (
-    <ImagePreview
-      previewImgPath={previewImgPath}
-      setPreviewImgPath={setPreviewImgPath}
-      textFromImage={textFromImage}
-    />
+    if (!ocr) {
+      return null;
+    }
+
+    return ocr?.result.blocks.map(block => {
+
+      const lineHeight = block.lines[0].frame.height;
+
+      const fontSize: any = lineHeight < 24 ? styles.minText : lineHeight - 16;
+
+      const touchablePos = {
+        left: block.frame.x * pixelRatio,
+        top: block.frame.y * pixelRatio,
+      };
+
+      // const copyToClipboard = () => {
+      //   Clipboard.setString(block.text);
+      // }
+
+      return (
+        <TouchableOpacity
+          key={uuid()}
+          // onPress={copyToClipboard}
+          style={[
+            styles.touchable,
+            touchablePos
+          ]}>
+          <Text
+            style={[
+              styles.text,
+              fontSize
+            ]}>
+            {block.text}
+          </Text>
+        </TouchableOpacity>
+      );
+    });
+  }, [ocr, pixelRatio]);
+
+  useEffect(() => {
+    (async () => {
+      const status = await Camera.requestCameraPermission();
+      setHasPermission(status === 'authorized');
+    })();
+  }, []);
+
+  return device && hasPermission ? (
+    <>
+      {!previewImgPath ? (
+        <>
+          <Camera
+            style={[StyleSheet.absoluteFill]}
+            frameProcessor={frameProcessor}
+            device={device}
+            ref={cameraRef}
+            isActive
+            frameProcessorFps={1}
+            orientation="portrait"
+            photo
+            onLayout={({
+              nativeEvent: {
+                layout: { width },
+              },
+            }: LayoutChangeEvent) => {
+              setPixelRatio(
+                width / PixelRatio.getPixelSizeForLayoutSize(width),
+              );
+            }}
+          />
+          {renderOverlay()}
+          <BottomButtons takePic={takePic} previewImgPath={previewImgPath} />
+        </>
+      ) : (
+
+        <ImagePreview
+          previewImgPath={previewImgPath}
+          setPreviewImgPath={setPreviewImgPath}
+          textFromImage={textFromImage}
+
+        />
+      )}
+
+    </>
   ) : (
-    <View style={styles.imagePreviewContainer}><ActivityIndicator animating={true} /></View>
-  )
+    <View>
+      <Text>No available cameras</Text>
+    </View>
+  );
 }
