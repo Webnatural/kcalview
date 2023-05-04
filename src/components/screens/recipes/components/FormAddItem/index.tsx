@@ -124,7 +124,7 @@ export default function FormAddItem({ recipes, setRecipes }: FormAddItemProps) {
                     styles.textAlignRight,
                   ]}
                   onChangeText={onChange}
-                  value={value}
+                  value={value.toString()}
                   keyboardType="numeric"
                   maxLength={4}
                 />
