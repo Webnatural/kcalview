@@ -3,7 +3,7 @@ import { View, ScrollView } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@navstack/root/index.types';
 
-import { RecipeItems } from '@screens/recipes/components/Item';
+import { RecipeItems } from '@kcalview/src/components/screens/recipes/components/Item';
 import FormAddItem from '@screens/recipes/components/FormAddItem';
 import { Recipe } from '@screens/recipes/index.types';
 import { getDBConnection, getRecipeItems, deleteRecipeItem } from '@db/recipes';
